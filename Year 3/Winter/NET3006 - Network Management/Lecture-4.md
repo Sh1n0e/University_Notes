@@ -12,8 +12,9 @@
 		- Interconnecting managing and managed entities 
 	- Management support organization
 		- Running the network using the management technologies
-		
-	![img1](L4-img/L4-1.png)
+
+
+![img1](L4-img/L4-1.png)
 	
 ---- 
 
@@ -29,7 +30,8 @@
 	- Manager - agent communication
 		- Manager is in charge
 		- Agent plays a support role
-	![img2](L4-img/L4-2.png)
+
+![img2](L4-img/L4-2.png)
 	
 ---- 
 

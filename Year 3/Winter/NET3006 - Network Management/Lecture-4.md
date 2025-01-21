@@ -132,7 +132,6 @@ EXAMPLE:
 *A managed object (MO) is a chunk of management infromation* that represents one of the real-world aspects of a network device.
 
 An MO could represent:
-
 	1. Device fan along with its operational state
 	2. Port along with a set of statistical data
 	3. Firewall rule

@@ -139,9 +139,9 @@ An MO could represent:
 The *real-world object* that an MO represents is generally referred to as the "real resource"
 	- Same real resource can be abstracted in different ways corresponding to different and possibly coexisting MOs
 	
-`Q: can you give an analogy of different abstractions of the same object?
-
-testing 
+> Q: can you give an analogy of different abstractions of the same object?
+> 
+> testing 
 
 `
 

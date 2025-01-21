@@ -1,0 +1,146 @@
+
+Startup Configs:
+
+Switch S1 (Catalyst 3850)
+!
+hostname S1
+spanning-tree mode rapid-pvst
+vtp version 2
+vtp mode server
+!
+line con 0
+exec-timeout 0 0
+logging synchronous
+exit
+!
+line vty 0 4
+privilege level 15
+password cisco
+login
+transport input all
+!
+interface range Gig1/0/1-3
+switchport mode trunk
+no shutdown
+exit
+!
+vlan 2
+name SecondVLAN
+exit
+!
+interface vlan 1
+ip address 10.0.0.1 255.0.0.0
+no shut
+exit
+
+
+Switch S2 (Catalyst 3850)
+!
+hostname S2
+spanning-tree mode rapid-pvst
+vtp version 2
+vtp mode server
+!
+line con 0
+exec-timeout 0 0
+logging synchronous
+exit
+!
+line vty 0 4
+privilege level 15
+password cisco
+login
+transport input all
+!
+interface range Gig1/0/1-3
+switchport mode trunk
+no shutdown
+exit
+!
+vlan 2
+name SecondVLAN
+exit
+!
+interface vlan 1
+ip address 10.0.0.2 255.0.0.0
+no shut
+exit
+
+Switch S3 (Catalyst 2960)
+!
+hostname S3
+spanning-tree mode rapid-pvst
+vtp version 2
+vtp mode server
+!
+line con 0
+exec-timeout 0 0
+logging synchronous
+exit
+!
+line vty 0 4
+privilege level 15
+password cisco
+login
+transport input all
+!
+interface range Gig1/0/1-4
+switchport mode trunk
+no shutdown
+exit
+!
+vlan 2
+name SecondVLAN
+exit
+!
+interface vlan 1
+ip address 10.0.0.3 255.0.0.0
+no shut
+exit
+
+### TASKS ###
+
+Configure S1 the primary root bridge for VLAN 1 and secondary for VLAN 2:
+config t
+spanning-tree vlan 1 root primary
+spanning-tree vlan 2 root secondary
+
+Configure S2 primary for VLAN 2 and secondary for VLAN1
+config t
+spanning-tree vlan 2 root primary
+spanning-tree vlan 1 root secondary
+
+To verify:
+show spanning-tree root 
+
+
+Adjusting port costs on S3:
+interface range gig1/0/1-2
+shutdown
+exit
+!
+interface gig1/0/2
+spanning-tree cost 2
+exit
+interface range gig1/0/1-2
+no shutdown
+exit
+end
+
+Modifying port priority of Fa0/2 to be preferred:
+int range gig1/0/1-2
+shutdown
+exit
+int gig1/0/2
+spanning-tree port-priority 64
+exit
+int range gig1/0/1-2
+no shutdown
+
+Verify:
+S3# show spanning-tree vlan 2 
+
+
+Final Verification commands:
+S3# show spanning-tree vlan 1
+S3# show spanning-tree vlan 2

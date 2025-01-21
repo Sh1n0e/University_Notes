@@ -1,0 +1,261 @@
+DLS1:
+
+conf t
+hostname DLS1
+vtp mode server 
+int range g1/0/1-3
+switchport trunk native vlan 666
+switchport mode trunk
+switchport nonegotiate
+no shut
+end
+
+### Configure vtp and vlans
+conf t
+vtp domain SWLAB
+vtp version 2
+vlan 99
+name MANAGEMENT 
+vlan 100
+name SERVERS
+vlan 110
+name GUEST
+vlan 120 
+name OFFICE
+vlan 999
+name PARKING_LOT 
+name NATIVE_DO_NOT_USE
+exit
+
+### Configure MST
+conf t
+spanning-tree mode mst
+exit
+clear spanning-tree detected protocols
+show spanning-tree
+
+!! View output
+
+## MANUALLY CONFIUGRE THIS MST
+conf t 
+spanning-tree mst configuration
+name CCNP
+revision 1
+instance 1 vlan 99,100
+
+show current 
+
+!! View output
+
+show pending
+
+!! View output
+
+exit
+end
+
+##Covnert ALL SWITCHES to vtp version 3
+conf t 
+vtp version 3
+
+## Set DLS1, ALS1 and ALS2 as clients for MST
+configure t
+vtp mode client mst
+
+## OSPFv3
+conf t 
+router ospfv6 area 123
+router id 5.5.5.5
+exit
+int vlan 99 
+ipv6 
+
+conf t
+int vlan 99
+ip address 10.1.99.101 255.255.255.0
+ipv6 address 2001:db8:cafe:99::101/64 
+ipv6 address FE80::5 link-local
+no shutdown
+exit
+
+#############################################
+
+DSL2:
+
+conf t
+hostname DLS2 
+vtp mode server
+int range g1/0/3-7
+switchport trunk native vlan 666
+switchport mode trunk
+switchport nonegotiate
+no shut
+
+### Configure vtp and vlans
+conf t
+vtp domain SWLAB
+vtp version 2
+vlan 99
+name MANAGEMENT 
+vlan 100
+name SERVERS
+vlan 110
+name GUEST
+vlan 120 
+name OFFICE
+vlan 999
+name PARKING_LOT 
+name NATIVE_DO_NOT_USE
+end
+
+### Configure MST
+conf t
+spanning-tree mode mst
+exit
+clear spanning-tree detected protocols
+show spanning-tree
+
+## MANUALLY CONFIUGRE THIS MST
+conf t 
+spanning-tree mst configuration
+name CCNP
+revision 1
+instance 1 vlan 99,100
+show current
+
+!! View output
+
+show current 
+
+!! View output
+
+show pending
+
+!! View output
+
+exit
+end
+
+show spanning-tree mst
+
+!! View output
+
+##Covnert ALL SWITCHES to vtp version 3
+conf t 
+vtp version 3
+end
+
+## Set DLS2 as primary VTP server for VLANs
+vtp primary vlan 
+
+##Set VTP primary server for MST and set VTP to 
+config t
+vtp mode server mst
+end
+vtp primary mst
+
+conf t
+int vlan 99
+ip address 10.1.99.102 255.255.255.0
+ipv6 address 2001:db8:cafe:99::102/64 
+ipv6 address FE80::5 link-local
+no shutdown
+exit
+
+#####################################################
+
+ALS1:
+conf t 
+hostname ALS1
+vtp mode server
+int range g1/0/1-2
+switchport trunk native vlan 666
+switchport mode trunk
+switchport nonegotiate
+no shut
+
+### Configure vtp and vlans
+conf t
+vtp domain SWLAB
+vtp version 2
+vlan 99
+name MANAGEMENT 
+vlan 100
+name SERVERS
+vlan 110
+name GUEST
+vlan 120 
+name OFFICE
+vlan 999
+name PARKING_LOT 
+vlan 666
+name NATIVE_DO_NOT_USE
+end
+
+conf t 
+int vlan 99 
+ip address 10.1.99.103 255.255.255.0
+no shutdown
+end
+
+##Covnert ALL SWITCHES to vtp version 3
+conf t 
+vtp version 3
+end
+
+##Migrating ALS1 & ALS2 to mst 
+conf t 
+spanning-tree mode mst
+end
+
+## Set DLS1, ALS1 and ALS2 as clients for MST
+configure terminal
+vtp mode client mst
+
+########################################################
+
+ALS2:
+conf t 
+hostname ALS2
+vtp mode server
+int range g1/0/1-2
+switchport trunk native vlan 666
+switchport mode trunk
+switchport nonegotiate
+no shut
+
+### Configure vtp and vlans
+conf t
+vtp domain SWLAB
+vtp version 2
+vlan 99
+name MANAGEMENT 
+vlan 100
+name SERVERS
+vlan 110
+name GUEST
+vlan 120 
+name OFFICE
+vlan 999
+name PARKING_LOT 
+name NATIVE_DO_NOT_USE
+end
+
+conf t 
+int vlan 99 
+ip address 10.1.99.104 255.255.255.0
+no shutdown
+end
+
+##Covnert ALL SWITCHES to vtp version 3
+conf t 
+vtp version 3
+
+##Migrating ALS1 & ALS2 to mst 
+conf t 
+spanning-tree mode mst
+end
+
+## Set DLS1, ALS1 and ALS2 as clients for MST
+configure router
+vtp mode client mst

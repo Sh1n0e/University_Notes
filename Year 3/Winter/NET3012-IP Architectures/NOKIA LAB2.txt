@@ -1,0 +1,49 @@
+NOKIA LAB Notes:
+User 2, Router 5
+
+// - to enter classic CLI
+
+Lab 1:
+Setting up:
+configure system name R5-rae00033
+configure card # card-type {card-type from show command} - Configuring network card
+configure rotuer interface {name} address {address}/{prefix} - Create address
+configure router interface {name} port {port number} - Assign address to a port
+configure port {port number} no shutdown
+admin save
+
+verification:
+show router interface - show all interfaces
+show card - show network cards
+
+
+Setting up OSPF:
+configure router router-id {number} - Creating router ID for OSPF
+configure router ospf area {area-id} interface {interface name} - Assigning interface to OSPF 
+configure router ospf no shutdown
+admin save
+
+verification:
+show router ospf interface
+show router ospf routes
+show ospf neighbor
+
+
+Lab 2:
+setting up ldp:
+
+configure router ldp interface-parameters interface toR1 ipv4
+configure router ldp interface-parameters interface toR6 ipv4
+configure router ldp interface-parameters interface toR9 ipv4 
+admin save
+
+verification:
+show router ldp interface
+show router ldp session
+show router tunnel-table
+show router ldp bindings active
+oam ldp-treetrace prefix 10.10.10.6/32 
+oam lsp-ping ldp prefix 10.10.10.6/32
+
+Setting up eMCP
+configure router ecmp {x}

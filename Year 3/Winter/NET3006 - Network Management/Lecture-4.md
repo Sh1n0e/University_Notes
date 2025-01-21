@@ -276,17 +276,17 @@ Issues:
 To determine whether management networks are beneficial, we would need to look at the trade offs.
 
 Which (dedicated or shared management network is better in:
-	- Reliability: 
-		- Out-of-band because it removes the possibility of having a highly congested production traffic flow from losing management traffic which is necessary to manage production traffic in the first place.
-	- Quality of service (QoS) for production traffic:
-		- Out-of-band works especially considering that management traffic is quite unpredictable since sometimes it will have a higher traffic rate than normal which would potentially interrupst production traffic flow.
-	- Ease of network planning:
-		- Out-of-band: It enables us to separate the planning for how management and production traffic would go around.
-		- However it is also fair to consider in-band management because it simplifies the entire process because you would have less factors to consider overall.
-	- Security:
-		- Out-of-band: prevents unauthorized access from making changes on the management side which can potentially cause the entire network to go down.
-	- Cost:
-		- In-band would be cheaper to implement as less time and effort would be needed in setting up the entire network infrastructure since it will all be bundled together.
+- Reliability: 
+	- Out-of-band because it removes the possibility of having a highly congested production traffic flow from losing management traffic which is necessary to manage production traffic in the first place.
+- Quality of service (QoS) for production traffic:
+	- Out-of-band works especially considering that management traffic is quite unpredictable since sometimes it will have a higher traffic rate than normal which would potentially interrupst production traffic flow.
+- Ease of network planning:
+	- Out-of-band: It enables us to separate the planning for how management and production traffic would go around.
+	- However it is also fair to consider in-band management because it simplifies the entire process because you would have less factors to consider overall.
+- Security:
+	- Out-of-band: prevents unauthorized access from making changes on the management side which can potentially cause the entire network to go down.
+- Cost:
+	- In-band would be cheaper to implement as less time and effort would be needed in setting up the entire network infrastructure since it will all be bundled together.
 		
 ----
 

@@ -152,6 +152,149 @@ The *real-world object* that an MO represents is generally referred to as the "r
 > 
 > A person's title will change depending on who you ask with each title representing a different abstraction of the same object
 
-`
+---- 
+
+## Network Management System (NMS)
+
+- NMS provides the tools to manage a network including the following:
+	- Network monitoring application & network analyzers
+	- Service Provisioning systems
+	- Device management applications
+	- Intrusion Detection systems
+
+----
+
+## Distributed Network Management
+
+An NMS is not always on one host
+
+*Distributed network management*:
+	- NMS runs on and is distributed across several hosts.
+	
+- Benefits of distributed management:
+	1. Scalable: more hosts = greater processing, I/O and storage capacity.
+	2. Robust: if one fails, NMS can still be running 
+	3. Delay and overhead: managing from location close to a local network (similar to cloud vs. edge computing.)
+	
+----
+
+## Management Proxy and Hierarchy
+
+Proxy: Node acting on behalf of other nodes
+
+A network device may act as a management proxy to another.
+	- Plays the agent role in interacting with the management system.
+	- Plays the manager role in interacting with another device.
+
+This eventually forms a *management hierarchy* and the entity in the middle does not have to be a device.
+	- possible a sub- or local management system.
+	
+![img7](L4-img/L4-7.png)
 
 ---- 
+
+## Manager - Agent - MIB Relationship
+
+- Fundamental relationship among manager, agent, and MIB
+- The manager operates on the abstraction of the agent provided through the agent's MIB:
+	- Sends requests to the Agent
+	- Receives responses from the Agent
+	- Asks the agent to be notified of events
+	
+Agent: proxy for managed device
+NMS: proxy for the real-world organization responsible for managing the network.
+
+![img8](L4-img/L4-8.png)
+
+----
+
+## Concept of Management Network 
+
+Managers and agents need to communicate and NMS on different hosts need to be able to communicate with each other.
+
+- Management network: the network interconnecting NMS and managed devices
+- Production networks: the network providing services to the end user.
+- Management and production networks can be physically separate networks or the same physical network.
+
+![img9](L4-img/L4-9.png)
+
+----
+
+## Connecting NMS to Network Devices
+
+Network devices can be connected with/without a management Network and here are the following methods to do so:
+
+1. Direct connections
+	- Network devices have a management/console port (typically a serial interface)
+	- A technician can directly connect a craft terminal to a device.
+
+Issues: 
+	- Needs on-site physical access to the device
+	- Impractical to go from device to device in a large scale network.
+	
+2. Connecting through a terminal servers
+	- Terminal server will have a set of serial interface ports, each connecting with one network device and a port for the craft terminal to connect to.
+
+Issues:
+	- Still needs on-site physical access to the terminal server 
+	- Would also still need to go between terminal servers
+	
+3. Terminal server with Ethernet port and IP address
+	- On-site connection to teh terminal server no longer needed
+	- preliminary management Network
+
+Issues: 
+	- Keeping track of which devices are connected to what terminal server and their respective ports.
+	
+4. Connecting to network devices through regular Ethernet ports(In-band Management Network)
+	- Skips the need for terminal servers
+	- Connects to network devices using regular Ethernet ports and IP address.
+	
+> In-band management network
+>
+> Same network infrastructure and port for management and production networks (mixing network management data traffic and production data traffic
+
+5. Connecting to network devices through management Ethernet ports (out-of-band Management Network)
+	- Also skips terminal servers
+	- Connects to network device using Ethernet ports and IP addresses dedicated to network management purposes.
+
+>Out-of-band Management network
+>
+>Different ports for management and production networks (separating management data traffic from production data traffic.
+
+----
+
+## In-band vs Out-of-band Management Network
+
+- In-band: *same network* shared by production and management traffic
+- Out-of-band: *dedicated* management network 
+
+----
+
+## Dedicated Management Network: Pros & Cons 
+
+To determine whether management networks are beneficial, we would need to look at the trade offs.
+
+Which (dedicated or shared management network is better in:
+	- Reliability: 
+		- Out-of-band because it removes the possibility of having a highly congested production traffic flow from losing management traffic which is necessary to manage production traffic in the first place.
+	- Quality of service (QoS) for production traffic:
+		- Out-of-band works especially considering that management traffic is quite unpredictable since sometimes it will have a higher traffic rate than normal which would potentially interrupst production traffic flow.
+	- Ease of network planning:
+		- Out-of-band: It enables us to separate the planning for how management and production traffic would go around.
+		- However it is also fair to consider in-band management because it simplifies the entire process because you would have less factors to consider overall.
+	- Security:
+		- Out-of-band: prevents unauthorized access from making changes on the management side which can potentially cause the entire network to go down.
+	- Cost:
+		- In-band would be cheaper to implement as less time and effort would be needed in setting up the entire network infrastructure since it will all be bundled together.
+		
+----
+
+## the Non-Technical aspects
+
+*Organizational aspect* of network management:
+	- Management support organization
+	- Important to telecommunications service providers and large enterprises
+	- Smaller businesses may not have a management support organization (but just one network administrator.
+	
+For large networks: *network operation center (NOC)* 

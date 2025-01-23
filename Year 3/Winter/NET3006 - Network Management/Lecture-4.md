@@ -75,8 +75,6 @@ With the management interface:
 	
 ![img4](L4-img/L4-4.png)
 
-----
-
 ## Management Information
 
 An agent has a management information base (MIB)
@@ -89,7 +87,6 @@ Management information provides an *abstraction of real-world aspects of devices
 4. Protocol timeout parameters
 5. Firewall rules
 	
-----
 
 ## Agent Part 2 - MIB
 
@@ -118,7 +115,6 @@ MIB provides a foundation for network management operations
 
 ![img5](L4-img/L4-5.png)
 
-----
 
 ## Agent Part 3 - Core Agent logic
 
@@ -291,6 +287,7 @@ Which (dedicated or shared management network is better in:
 ----
 
 ## the Non-Technical aspects
+### Network Management Fundamentals - Pages 93-97
 
 *Organizational aspect* of network management:
 	- Management support organization
@@ -298,3 +295,30 @@ Which (dedicated or shared management network is better in:
 	- Smaller businesses may not have a management support organization (but just one network administrator.
 	
 For large networks: *network operation center (NOC)* 
+
+---- 
+
+## Management Support Organization - Tasks
+
+- Overall task: managing the network Manager
+	- Montoring the network for failures
+	- Diagnosing failures and carrying out repairs
+	- Provisioning new services
+	- Adding and removing users to and from the network
+	- Tracking network performance, taking preventative measures
+	- Planning network upgrades
+	- Planning network topology and network buildout
+	
+----
+
+## Management Support Organization - Structure
+
+- Management support organization divided into different units
+	- Each performing a distinct function
+	- Minimizing interactions between different units and dependencies causing finger-pointing situations
+	
+Example structure:
+- Network planning: Analyzing network usage and traffic patterns, planning network buildout and service rollout.
+- Network operations: Keeping the network running and monitoring the Network
+- Network administration: Physically deploying the network and services on it, may include field technicians (combining A and M in OAMP)
+- Customer management: Interacting with customers

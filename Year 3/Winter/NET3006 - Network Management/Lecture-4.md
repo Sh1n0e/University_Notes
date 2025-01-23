@@ -318,7 +318,7 @@ For large networks: *network operation center (NOC)*
 	- Minimizing interactions between different units and dependencies causing finger-pointing situations
 	
 Example structure:
-	- Network planning: Analyzing network usage and traffic patterns, planning network buildout and service rollout.
-	- Network operations: Keeping the network running and monitoring the Network
-	- Network administration: Physically deploying the network and services on it, may include field technicians (combining A and M in OAMP)
-	- Customer management: Interacting with customers
+- Network planning: Analyzing network usage and traffic patterns, planning network buildout and service rollout.
+- Network operations: Keeping the network running and monitoring the Network
+- Network administration: Physically deploying the network and services on it, may include field technicians (combining A and M in OAMP)
+- Customer management: Interacting with customers

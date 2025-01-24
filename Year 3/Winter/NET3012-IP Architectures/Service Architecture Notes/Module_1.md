@@ -306,3 +306,59 @@ admin save
 
 show service customer 
 ```
+
+----
+
+## Service Identifiers 
+
+- Service ID - numeric value used on the Nokia router to identify the service 
+	- A service is associated with a customer ID
+	- Service must be created unsing a unqieu service ID on that router
+	
+----
+
+## Service creation 
+
+```
+(MD-CLI)
+*(gl)[/configure]
+service epipe 50
+
+*(gl)[/configure service epipe '50']
+customer 100
+
+*(gl)[/configure service epipe '50']
+admin-state enable 
+
+*(gl)[/configure service epipe '50']
+commit 
+
+(My Guess on Classic CLI)
+
+configure service epipe 50
+
+customer 100 
+
+no shutdown
+
+exit 
+
+admin save 
+
+(SHOW COMMAND)
+
+show service id 50 base 
+```
+
+----
+
+## Service Access Point (SAP)
+
+- SAP is the Subscribers point of interface to the service network 
+- Belongs to a single service 
+- Specified as a physical port and an encapsulation identifier 
+- To be used, a port must be configured as an access or hybrid port 
+
+----
+
+## SAP ID (page 52 on architectures PDF)

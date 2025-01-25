@@ -76,5 +76,80 @@ When it comes to MSTI's... 1+2=4
 - Instance 0 (MST0) is the internal spanning tree (IST)
 - MST does not send BPDUs for every active STP MST instance separately.
 - A special instance is designed to carry STP-related infromation.
+- Topologies converge differently because root bridges are each configured differently within the MST region.
 
 ![img5](img/M3-5.png)
+
+In the figure above, we can see that there are 3 independent MST instances: MST0 (IST), MST1 and MST 2. This means there are a total of 3 MST instances running on the switch.
+
+- MSTIs do not send independent individual BPDUs. Inside the MST region, bridges exchange MST BPDUs that can be seen as normal RSTP BPDUs for the IST while contraining additional information for each MSTI.
+
+- The following diagram shows a BPDU exchange between Switches A and B inside an MST region. Each switch only sends one BPDU, each includes one MRecord per MSTI present in the ports.
+
+![img5](img/M3-6.png)
+
+- As with teh PVST, the 12-bit Extended System ID field is used in MST, this can be used for tuning MST instances. This field carries the MST instance number.
+
+----
+
+## MST Region Boundary 
+
+- The first property of an MST region is that at the boundary ports, no configured MSTI BPDUs are sent out. *Only the IST BPDUs are propogated in and outside of the MST region*.
+
+- MST region boundary is any port that connects to a switch that is in a different MST region or that connects to IEEE 802.1d or 802.1w BPDUs.
+
+- Propagating BPDUs at the MST region boundary involves a feature called PVST simulation mechanism. It sends out PVST +& RSTP BPDUs, one for each VLAN.
+
+- The PVST simulation mechanism is required because PVST+/RSTP topologies do not understand the structure of IST BPDUs.
+
+----
+
+## MST Configuration 
+
+```
+// Define MST as the spanning tree protocol with the following command
+SW(config)# spanning-tree mode mst 
+
+// (optional) Define MST isntance priority using one of the two methods 
+SW(config)# spanning-tree mode mst <isntance-number> priority <priority (0-61440 | increments of 4096)>
+SW(config)# spanning-tree mode mst <instance-number> root {primary | secondary}
+
+// Enter spanning-tree configuration mst with the following command 
+SW(config)# spanning-tree mst configuration 
+
+
+//Define MST region name 
+SW(config-mst)# name <NAME>
+
+// Specify the MST version 
+SW(config-mst)# revision <version>
+
+// Show commands 
+SW# show spanning-tree mst configuration --> verify MST configs
+SW# show spanning-tree --> Show relevant spanning-tree observations
+SW# show spanning-tree mst <isntance-number> --> Show consolidated view of MST topology table
+SW# show spanning-tree mst interface <int-id> --> view specific interface settings for MST.
+```
+
+----
+
+## COnfiguring VTPv3 Primary Server for MST 
+
+- In VTP version 3 (VTPv3) a single wsitch can be selected and configured as VTP Primary Server to propogate VLANs information, the same or different switch can also be configured as VTP primary Server for MST to propagate MST configuration amongst the switches in the VPTv3 domain.
+- Only a single VTPv3 switch that is configured as the PRimary Server for MST and VLANs can propagate the respective configuraitons amongst the other switches within the domain.
+- VTPv2 does *NOT* have the concept of VTP Primary Server
+- In the example below: DLS2 is configured to be the Primary Server for MST 
+
+```
+DLS2# vtp primary MST
+DLS2(config)# vtp mode server mst --> set the switch as the server for the MST 
+```
+
+- ALL other switches should be configured as MST clients with the following command:
+
+```
+DLS1(config)# vtp mode client mst 
+DLS1# show vtp status --> should show DLS2 as the Primary server for MST 
+```
+
+![img](img/M3-7.png)

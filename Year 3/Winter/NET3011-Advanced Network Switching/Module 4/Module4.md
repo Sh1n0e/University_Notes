@@ -88,7 +88,7 @@ NOTE: VPTv3 is backwards compatible with VTP version 2 for normal range VLANs on
 
 ## EtherChannel Components
 
-![img](M4-1.png)
+![img](img/M4-1.png)
 
 Apsects of EtherChannel:
 - Etherchannel is defined in the IEE 802.3ad link aggregation specification 
@@ -133,13 +133,13 @@ On:
 - No protocols is running 
 - Both sides of Etherchannel have to be enabled as 'on'
 
-![img](M4-2.png)
+![img](img/M4-2.png)
 
 ----
 
 ## Verifying EtherChannel Summary Status
 
-![img](M4-3.png)
+![img](img/M4-3.png)
 
 *You don't want to see SD under Port-channel as it means it is not operational*
 
@@ -196,11 +196,11 @@ Exclusive OR (XOR):
 	
 ----
 
-![img](M4-4.png)
+![img](img/M4-4.png)
 
 ----
 
-![img](M4-5.png)
+![img](img/M4-5.png)
 
 ----
 

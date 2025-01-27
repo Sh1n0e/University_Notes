@@ -109,6 +109,7 @@ Apsects of EtherChannel:
 - advertises messages with teh multicast MAC address 0100:0CCC:CCCC and the protocol code 0x0104. 
 
 PAgP can operate in two modes:
+
 Auto: 
 - Interface does not initiate an EtherChannel to be established and does not transmit PAgp packets out of it 
 
@@ -123,6 +124,7 @@ Desirable:
 - Advertises messages with the multicast MAC address 0180:C200:0002
 
 LACP can operate in two modes:
+
 Passive:
 - An interface does not initiate an EtherChannel to be established and does not transmit LACP packets out of it
 

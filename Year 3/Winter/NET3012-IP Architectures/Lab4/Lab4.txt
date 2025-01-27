@@ -1,0 +1,322 @@
+A:R5-Rae00033>config>service# info 
+----------------------------------------------
+        sdp 8 mpls create
+            far-end 10.10.10.8
+            ldp
+            keep-alive
+                shutdown
+            exit
+            no shutdown
+        exit
+        customer 1 name "1" create
+            description "Default customer"
+        exit
+        epipe 10 name "Rae00033" customer 1 create
+            sap 1/1/2:10 create
+                description "epipe Rae00033"
+                no shutdown
+            exit
+            spoke-sdp 8:10 create
+                no shutdown
+            exit
+            no shutdown
+        exit
+        epipe 20 name "hart0400" customer 1 create
+            shutdown
+            sap 1/1/2:20 create
+                description "ePipe hart0400"
+                no shutdown
+            exit
+            spoke-sdp 8:20 create
+                no shutdown
+            exit
+        exit
+        epipe 30 name "lin00193" customer 1 create
+            shutdown
+            sap 1/1/2:30 create
+                description "epipe lin00193"
+                no shutdown
+            exit
+            spoke-sdp 8:30 create
+                no shutdown
+            exit
+        exit
+----------------------------------------------
+
+A:R5-Rae00033# show service id 10 base 
+
+===============================================================================
+Service Basic Information
+===============================================================================
+Service Id        : 10                  Vpn Id            : 0
+Service Type      : Epipe               
+MACSec enabled    : no                  
+Name              : Rae00033
+Description       : (Not Specified)
+Customer Id       : 1                   Creation Origin   : manual
+Last Status Change: 01/27/2025 15:31:39 
+Last Mgmt Change  : 01/27/2025 16:53:55 
+Test Service      : No                  
+Admin State       : Up                  Oper State        : Down
+MTU               : 1514                
+Vc Switching      : False               
+SAP Count         : 1                   SDP Bind Count    : 1
+Per Svc Hashing   : Disabled            Lbl Eth/IP L4 TEID: Disabled
+Ignore MTU Mismat*: Disabled            
+Vxlan Src Tep Ip  : N/A
+Force QTag Fwd    : Disabled            
+Lcl Switch Svc St : sap                 
+Oper Group        : <none>              
+ 
+-------------------------------------------------------------------------------
+Service Access & Destination Points
+-------------------------------------------------------------------------------
+Identifier                               Type         AdmMTU  OprMTU  Adm  Opr
+-------------------------------------------------------------------------------
+sap:1/1/2:10                             q-tag        1518    1518    Up   Up
+sdp:8:10 S(10.10.10.8)                   Spok         0       0       Up   Down
+===============================================================================
+
+
+A:R5-Rae00033# show service id 20 base 
+
+===============================================================================
+Service Basic Information
+===============================================================================
+Service Id        : 20                  Vpn Id            : 0
+Service Type      : Epipe               
+MACSec enabled    : no                  
+Name              : hart0400
+Description       : (Not Specified)
+Customer Id       : 1                   Creation Origin   : manual
+Last Status Change: 01/27/2025 15:31:39 
+Last Mgmt Change  : 01/27/2025 17:07:09 
+Test Service      : No                  
+Admin State       : Down                Oper State        : Down
+MTU               : 1514                
+Vc Switching      : False               
+SAP Count         : 1                   SDP Bind Count    : 1
+Per Svc Hashing   : Disabled            Lbl Eth/IP L4 TEID: Disabled
+Ignore MTU Mismat*: Disabled            
+Vxlan Src Tep Ip  : N/A
+Force QTag Fwd    : Disabled            
+Lcl Switch Svc St : sap                 
+Oper Group        : <none>              
+ 
+-------------------------------------------------------------------------------
+Service Access & Destination Points
+-------------------------------------------------------------------------------
+Identifier                               Type         AdmMTU  OprMTU  Adm  Opr
+-------------------------------------------------------------------------------
+sap:1/1/2:20                             q-tag        1518    1518    Up   Down
+sdp:8:20 S(10.10.10.8)                   Spok         0       0       Up   Down
+===============================================================================
+
+
+
+A:R5-Rae00033# show service id 30 base 
+
+===============================================================================
+Service Basic Information
+===============================================================================
+Service Id        : 30                  Vpn Id            : 0
+Service Type      : Epipe               
+MACSec enabled    : no                  
+Name              : lin00193
+Description       : (Not Specified)
+Customer Id       : 1                   Creation Origin   : manual
+Last Status Change: 01/27/2025 15:31:39 
+Last Mgmt Change  : 01/27/2025 16:55:19 
+Test Service      : No                  
+Admin State       : Down                Oper State        : Down
+MTU               : 1514                
+Vc Switching      : False               
+SAP Count         : 1                   SDP Bind Count    : 1
+Per Svc Hashing   : Disabled            Lbl Eth/IP L4 TEID: Disabled
+Ignore MTU Mismat*: Disabled            
+Vxlan Src Tep Ip  : N/A
+Force QTag Fwd    : Disabled            
+Lcl Switch Svc St : sap                 
+Oper Group        : <none>              
+ 
+-------------------------------------------------------------------------------
+Service Access & Destination Points
+-------------------------------------------------------------------------------
+Identifier                               Type         AdmMTU  OprMTU  Adm  Opr
+-------------------------------------------------------------------------------
+sap:1/1/2:30                             q-tag        1518    1518    Up   Down
+sdp:8:30 S(10.10.10.8)                   Spok         0       0       Up   Down
+===============================================================================
+
+A:R5-Rae00033# show router ldp bindings services 
+
+===============================================================================
+LDP Bindings (IPv4 LSR ID 10.10.10.5)
+             (IPv6 LSR ID ::)
+===============================================================================
+Label Status:
+        U - Label In Use, N - Label Not In Use, W - Label Withdrawn
+        S - Status Signaled Up,  D - Status Signaled Down, e - Label ELC
+        WP - Label Withdraw Pending, BU - Alternate For Fast Re-Route
+Service Type:
+        E - Epipe Service, V - VPLS Service, M - Mirror Service
+        A - Apipe Service, F - Fpipe Service, I - IES Service, R - VPRN service
+        P - Ipipe Service, C - Cpipe Service
+FEC Flags:
+        LF - Lower FEC, UF - Upper FEC, M - Community Mismatch,
+        BA - ASBR Backup FEC
+===============================================================================
+LDP Service FEC 128 Bindings
+===============================================================================
+Type                                          VCId       SDPId             LMTU
+Peer                                          SvcId      IngLbl            RMTU
+                                                         EgrLbl            
+-------------------------------------------------------------------------------
+E-Eth                                         10         8                 1500
+10.10.10.8:0                                  10         524277U           None
+                                                           --              
+
+E-Eth                                         20         8                 1500
+10.10.10.8:0                                  20         524274U           None
+                                                           --              
+
+E-Eth                                         30         8                 1500
+10.10.10.8:0                                  30         524273U           None
+                                                           --              
+
+-------------------------------------------------------------------------------
+No. of VC Labels: 3
+===============================================================================
+
+===============================================================================
+LDP Service FEC 129 Bindings
+===============================================================================
+SAII                                            AGII        IngLbl         LMTU
+TAII                                            Type        EgrLbl         RMTU
+Peer                                            SvcId       SDPId          
+-------------------------------------------------------------------------------
+No Matching Entries Found
+===============================================================================
+
+
+A:R9-hart0400>config>service# info 
+----------------------------------------------
+        customer 1 name "1" create
+            description "Default customer"
+        exit
+----------------------------------------------
+
+A:R9-hart0400>config>router# info 
+----------------------------------------------
+#--------------------------------------------------
+echo "IP Configuration"
+#--------------------------------------------------
+        interface "B/1"
+            shutdown
+            ip-mtu 1536
+        exit
+        interface "info]"
+            no shutdown
+        exit
+        interface "system"
+            address 10.10.10.9/32
+            no shutdown
+        exit
+        interface "t"
+            no shutdown
+        exit
+        interface "toR5"
+            address 10.5.9.9/24
+            port 1/1/2:20
+            ip-mtu 1536
+            no shutdown
+        exit
+        interface "toR5-2"
+            address 192.168.10.9/24
+            port 1/1/2:10
+            ip-mtu 1536
+            no shutdown
+        exit
+        router-id 10.10.10.9
+#--------------------------------------------------
+echo "OSPFv2 Configuration"
+#--------------------------------------------------
+        ospf 0
+            area 0.0.0.0
+                interface "system"
+                    no shutdown
+                exit
+            exit
+            no shutdown
+        exit
+#--------------------------------------------------
+echo "MPLS Configuration"
+#--------------------------------------------------
+        mpls
+            interface "system"
+                no shutdown           
+            exit
+            interface "toR5"
+                no shutdown
+            exit
+            interface "toR5-2"
+                no shutdown
+            exit
+        exit
+#--------------------------------------------------
+echo "RSVP Configuration"
+#--------------------------------------------------
+        rsvp
+            interface "system"
+                no shutdown
+            exit
+            interface "toR5"
+                no shutdown
+            exit
+            interface "toR5-2"
+                no shutdown
+            exit
+            no shutdown
+        exit
+#--------------------------------------------------
+echo "MPLS LSP Configuration"
+#--------------------------------------------------
+        mpls
+            path "loose"
+                no shutdown
+            exit
+            lsp "toR5-1-hart0400"
+                to 10.10.10.5
+                primary "loose"
+                exit
+                no shutdown
+            exit
+            no shutdown
+        exit
+#--------------------------------------------------
+echo "LDP Configuration"
+#--------------------------------------------------
+        ldp
+            import-pmsi-routes
+            exit
+            tcp-session-parameters
+            exit
+            interface-parameters
+                interface "toR5" dual-stack
+                    ipv4
+                        no shutdown
+                    exit
+                    no shutdown
+                exit
+                interface "toR5-2" dual-stack
+                    ipv4
+                        no shutdown
+                    exit
+                    no shutdown
+                exit
+            exit
+            targeted-session
+            exit
+            no shutdown
+        exit
+----------------------------------------------

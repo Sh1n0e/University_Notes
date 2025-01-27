@@ -8,25 +8,29 @@
 ## Roles of VTP 
 
 VTP Server:
-- All switches are VTP servers by default 
+
+- All switches are VTP servers by default
 - Can create, modify, and delete VLANs and specify other configuration parameters such as VTP version and VTP pruning for the entire VTP domain 
 - Sends and forwards advertisements to other switches 
 - Syncrhonize VLAN configuration received from other domain switches 
 - VLAN configurations are stored in the flash: vlan.dat file 
 
 VTP Client:
+
 - *CANNOT* create, change, or delete VLANs 
 - Sends and forwards advertisements to other switches 
 - Syncrhonizes VLAN configuration received from other domain switches 
 - Learned VLANs are stored in the flash: vlan.dat file 
 
 VTP Transparent:
+
 - Does *NOT* participate in VTP 
 - You can create, modify, and delete VLANs *only on the local switch* 
 - Can forward VTP advertisements received from other switches in the same domain 
 - Saves VLAN configurations in running config and vlan.dat 
 
 VTP Off: 
+
 - Does not participate in VTP (ONLY EXISTS IN VTPv3) 
 - You can create, modify, and delete VLANs *only on the local switch* 
 - Does not participate in VTP advertisements and does not forward them out of any ports either
@@ -36,12 +40,13 @@ VTP Off:
 ## VTP Advertisements 
 
 Summary Advertisements:
+
 - Keepalives sent by VTP Servers and Clients every 5 mins. Advertising their Vtp domain name, password (if configured) and COnfiguration revision number 
 - Incoming advertisements are compared with teh receiving switch VTP domain name and password 
-	- If the VTP domain name and password are different, the switch simply ignores the packet 
-	- If the VTP domain namd and password are the same, the switch then compares configuraiton revision number to its own revision number. If the revision number is lower, the packet is ignored. (This only applies to VTPv1 and VTPv2)
-	- If the configuration number is higher or equal, then an advertisement request is sent. 
-	
+ 	- If the VTP domain name and password are different, the switch simply ignores the packet 
+ 	- If the VTP domain namd and password are the same, the switch then compares configuraiton revision number to its own revision number. If the revision number is lower, the packet is ignored. (This only applies to VTPv1 and VTPv2)
+ 	- If the configuration number is higher or equal, then an advertisement request is sent. 
+
 Subset Advertisements:
 - Sent by the VTP server every time a VLAN is added, deleted, or changed
 - It increments the configuration revision number and issues a summary advertisement image.

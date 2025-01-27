@@ -65,11 +65,12 @@ When it comes to MSTI's... 1+1=3
 
 ## MST Instances (MSTI)
 
-- The MANUALLY created MSTIs are spanning tree instances that onlyxist inside a region. These instances run RTSP (802.1w) for rapid convergence
-- MST uses a special instance, instance 0 (MST0), called the Internal spannign tree (IST)
-- IST is ALWAYS the first instance and runs on all switch portinterfaces in the MST region regardless of the VLANs associated with the ports. IST is enabled by default and CANNOT be deleted.
-- Additional infromation about other MSTIs is nested in teh IST BPDU that is transmitted throughout the MST region. This allows MST to advertise only one set of BPDU's, minimizing STP traffic.
-- MST manually configured interfaces do not send BPDUs outside an MST region, only the IST does. This means that *IST can send BPDUs inside and outside the MST region*
+- The MANUALLY created MSTIs are spanning tree instances that only exist inside a region. These instances run RTSP (802.1w) for rapid convergence
+- MST uses a special instance, instance 0 (MST0), called the Internal spanning tree (IST)
+- IST is ALWAYS the first instance and runs on all switchport interfaces in the MST region regardless of the VLANs associated with the ports. IST is enabled by default and CANNOT be deleted.
+- Additional infromation about other MSTIs is nested in the IST BPDU that is transmitted throughout the MST region. This allows MST to advertise only one set of BPDU's, minimizing STP traffic.
+- MST manually configured interfaces do not send BPDUs outside an MST region, only the IST does.
+- This means that *IST can send BPDUs inside and outside the MST region*
 
 ![img4](img/M3-4.png)
 

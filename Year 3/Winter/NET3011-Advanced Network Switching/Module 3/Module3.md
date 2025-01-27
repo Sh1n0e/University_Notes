@@ -14,7 +14,7 @@ MST instances run RSTP (IEEE 802.1w) convergence mechanisms by default.
 	
 ![img1](img/M3-1.png)
 
-> PVST is Cisco Proprietary and only operates on Inter-switch links (ISL) Trunks, whereas PVST+ can operate on either ISL or 802.1q Traunks, and that is the difference on whether it is PVST or PVST+ that is being ran.
+> PVST is Cisco Proprietary and only operates on Inter-switch links (ISL) Trunks, whereas PVST+ can operate on either ISL or 802.1q Trunks, and that is the difference on whether it is PVST or PVST+ that is being ran.
 
 ----
 

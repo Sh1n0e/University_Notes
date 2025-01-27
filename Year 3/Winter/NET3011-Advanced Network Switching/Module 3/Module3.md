@@ -51,7 +51,7 @@ The figure below show how switches maintain STP topologies for VLANs. If more VL
 	- MSTI 2
 	- MSTI 0 
 	
-When it comes to MSTI's... 1+2=4
+When it comes to MSTI's... 1+1=3
 
 ----
 

@@ -1,3 +1,21 @@
+- [VLAN Trunking Protocol](#vlan-trunking-protocol)
+- [Roles of VTP](#roles-of-vtp)
+- [VTP Advertisements](#vtp-advertisements)
+- [Versions of VTP](#versions-of-vtp)
+- [VTPv3 new features](#vtpv3-new-features)
+- [EtherChannel Bundle](#etherchannel-bundle)
+- [EtherChannel Components](#etherchannel-components)
+- [PAgP Etherchannel mode](#pagp-etherchannel-mode)
+- [LACP Etherchannel mode](#lacp-etherchannel-mode)
+- [Static Etherchannel mode](#static-etherchannel-mode)
+- [Verifying EtherChannel Summary Status](#verifying-etherchannel-summary-status)
+- [Troubleshooting EtherChannel](#troubleshooting-etherchannel)
+- [EtherChannel Guard](#etherchannel-guard)
+- [Load Balancing Traffic with EtherChannel Bundles](#load-balancing-traffic-with-etherchannel-bundles)
+- [EtherChannel Load Balancing Options](#etherchannel-load-balancing-options)
+- [Viewing Port-Channel load balancing Algorithm](#viewing-port-channel-load-balancing-algorithm)
+
+
 ## VLAN Trunking Protocol
 
 - Cisco created the proprietary protocol, VLAN Trunking Protocol (VTP), to reduce the burden of provisioning VLANs on switches 

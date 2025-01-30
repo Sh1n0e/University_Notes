@@ -79,7 +79,8 @@ Infomration in MIB organized into a conceptual tree
 - Every model in the MIB --> a node in the tree
 
 Each node named relative to a containing node:
-- Node ID: the object identifier (OID)
+- Node ID: the object identifier (OID) that contains arbritary data
+- Object type: Contains real information 
 - OID of iso: 1
 - OID of org: 1.3
 - OID of dod: 1.3.6
@@ -127,3 +128,101 @@ Based on IETF RFC1213.
 Establishes mib-2 as a new node under "mgmnt" in OID tree 
 
 ![img](img/3.png)
+
+Specify submodules (child nodes) of MIB-2
+
+- Only 8 of 200+ child nodes shown below
+
+![img](img/4.png)
+
+----
+
+## Define A Submodule of MIB-2
+
+- Elements of the definition of an object type
+- *Syntax*: Data type (e.g "string" in sysDescr)
+- *Access*: read-write (if can be set by a manager), read-only, or not-accessible
+- *Status*: definition lifecycle (mandatory, optional, obsolete)
+  - mandatory: every implementation of the module must include it
+- *Description*: explanation
+  - Intended purpose of the object type
+  - Aspects to be implemented
+
+----
+
+## Define A (Conceptual) Table
+
+- *TCP* (OID 1.3.6.1.2.1.6) has 20 child nodes
+  - Some includes the *definition of a table*
+- *Syntax* (data type): *SEQUENCE OF* another object
+  - tcpConnTable is a table, each row is a tcpConnEntry object
+- *Access*: tcpConnTable not accessible
+- Carries no info on its own; just a container object for objects carrying info.
+
+![img](img/5.png)
+
+----
+
+## Table Entry
+
+- "tcpConnEntry" - a conceptual row/entry of "tcpConnTable"
+  - Syntax: not a simple data type but a sequence
+  - *t*cpConnEntry object and *T*cpConnEntry syntax are different
+  - Index: unique to table entry objects (specifying the elements used as the index)
+
+![img](img/6.png)
+
+----
+
+## Columnar Object
+
+A table (and each entry of the table) has a set of columns
+- Each column corresponds to a columnar object.
+
+----
+
+## Not-Accessible vs Accessible
+
+- tcpConnTable not accesible - just a conceptual container for entries
+- tcpConnEntry also not accesible - a conceptual container of elements
+- *Columnar objects: accessible - elements of the array*
+
+----
+
+# Instances and Instance OID
+
+----
+
+## Instantiation in SNMP MIB
+
+- Instances of an object type contain the actual values that a manager can retrieve from the agent.
+- In SNMP, instances are also considered as part of the OID tree
+- *Only leaf nodes can be instantiated*
+  - Leaf nodes grow new leaf nodes (instances)
+
+----
+
+## Instance OID
+
+Scalar Objects:
+- Scalar object can have only one instance
+  - Object instance has an OID too
+- OID of the object instance = OID of the object  + suffix (.0)
+- Consider an instance of object sysServices (1.3.6.1.2.1.1.7)
+  - Instance OID: 1.3.6.1.2.1.7.7.0
+
+![img](img/7.png)
+
+Columnar Objects:
+- A table can have multiple entries (multiple instances of the table entry)
+  - Each entry has multiple columnar objects
+  - Each columnar object needs to be distinguished
+
+![img](img/8.png)
+
+- Recall that table entries have an "index" field in its definition
+  - Index field specifies the column(s) used for indexing
+  - *Index* --> Used to help identify each instance of a columnar object
+- OID of a columnar object instance = OID of the object + index value 
+- 
+![img](img/9.png)

@@ -362,3 +362,42 @@ show service id 50 base
 ----
 
 ## SAP ID (page 52 on architectures PDF)
+
+An SAP is a local entity to teh service router and is uniquely identified by the following:
+- Physcial Ethernet port, or SOI IET/SDH or TDM port and channel
+- Encapsulation identifier (ID)
+
+Depending on teh encapsulation, a physcial port or channel can have more than one SAP associated with it.
+
+SAPs can be created on ports or channels designated as "access" or "hybrid" in the physical port configuration.
+- SAPs cannot be created on ports designated as core-facing "network" ports.
+
+----
+
+## Ethernet Encapsulations
+
+1. NULL - supports a single service on the prot
+2. Dot1Q - supports multiple services for one customer or multiple services for multiple customers.
+3. Q-in-Q - adds an IEE 802.1Q tag to the 802.1Q-tagged packets entering the network to expand VLAN space by tagging tagged packets (produces a double-tagged frame)
+
+Ethernet port encapsulation can be set using the following command:
+
+```
+configure port x/y/z ethernet encap-type
+```
+
+![img](img/M1-17.png)
+
+*You have to configure the por to be an access or hybrid port*
+
+----
+
+## SAP Configuration Considerations
+
+- SAP ID is locally unique (the same SAP ID value can be used on another service router)
+	- A port or channel can have more than one SAP configured on it.
+- SAP can be configured with any of the following
+  - Ingress and egress filter policy
+  - Ingress and egress QoS policy
+  - Ingress and egress scheduler poliy
+  - Accounting policy 

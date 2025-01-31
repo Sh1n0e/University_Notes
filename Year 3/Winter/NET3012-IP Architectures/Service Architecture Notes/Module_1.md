@@ -401,3 +401,68 @@ configure port x/y/z ethernet encap-type
   - Ingress and egress QoS policy
   - Ingress and egress scheduler poliy
   - Accounting policy 
+
+----
+
+## Local Service 
+
+In alocal service, all components reside on a single router.
+
+![img](img/M1-18.png)
+
+![img](img/M1-19.png)
+
+----
+
+## Distributed Service 
+
+Distributed service as components on multiple routers and uses the IP/MPLS network to connect the service and deliver data.
+
+SDP binding is required to signal the service labels and define the transport to the remote router.
+
+----
+
+## Service Distribution Point (SDP) Characteristics
+- Logical entity used to direct traffic between routers
+- Locally unique (Same SDP IP can be used on another router)
+- SDPs use the system IP address to identify far-end destinations
+- SDP is not specific to one service; many services can use the same SDP
+- All services bound to an SDP use the same encapsulation
+- Operations on an SDP will affect all services bound to that SDP.
+
+----
+
+## Binding an SDP to a service
+
+- SDP provide binding between the service labls and transport tunnels (LDP/RSVP or GRE), which are performing control plane signaling.
+- To direct a service to use an SDP for distribution, the service is joined to the SDP using SDP binding
+- A service label is not signaled unless the service is bound to an SDP 
+- Because data forwarding in distributed services relies on SDP, transport tunnel should be protected.
+
+----
+
+## SDP Encapsulation Types
+
+MPLS encapsulation:
+- Uses LDP or RSVP-TE for label signaling
+- LDP relies on an IGP to find its path 
+- RSVP-TE requires additional configurations & allows finer control of paths.
+
+GRE encapsulation:
+- Encapsulates traffic in an IP/GRE header, appears as an IP packet.
+- Low control plane overhead
+- GRE uses normal IP routing to find a path
+
+----
+
+![img](img/M1-20.png)
+![img](img/M1-21.png)
+![img](img/M1-23.png)
+![img](img/M1-24.png)
+
+----
+
+# Page 73 to 87 for cast study with examples
+
+----
+

@@ -1,6 +1,6 @@
 body {
-	margin-top: 60px;
-	background-color: rgb(193, 151, 210);
+  margin-top: 60px;
+  background-color: rgb(193, 151, 210);
 }
 
 .center {
@@ -10,22 +10,25 @@ body {
   width: 50%;
 }
 
+/* Base font sizes */
 h1 {
   color: white;
-  font-size: 3vw;
+  font-size: 50px;
 }
+
 p {
   color: black;
-  font-size: 1vw;
+  font-size: 20px; 
   padding: 15px;
 }
 
 a {
-	font-size: 1vw;
-	padding: 15px;
-	color: white;
+  font-size: 20px; 
+  padding: 15px;
+  color: white;
 }
 
+/*Navigation style*/ 
 ul {
   list-style-type: none;
   margin: 0;
@@ -55,3 +58,22 @@ ul li a:hover {
 }
 
 
+@media (min-width: 768px) { /* Medium screen size */
+  h1 {
+    font-size: 80px; 
+  }
+
+  p, a {
+    font-size: 30px; 
+  }
+}
+
+@media (min-width: 1024px) { /* Large screen size */
+  h1 {
+    font-size: 100px;
+  }
+
+  p, a {
+    font-size: 40px; 
+  }
+}

@@ -138,4 +138,100 @@ Resource Reservation protocol with Traffic Engineering (RSVP-TE):
 - Routers advertise label bindings for their FECs, which are propogated to the upstream routers
 - Each router selects the label value that it will advertise, associated with each FEC.
 
-(Continue on Page 79 of MPLS)
+## Result of Label Distribution (Data Forwarding)
+
+![img](img/14.png)
+
+- Label Forwarding Information Base (LFIB) tables are populated and the LSP gets established 
+- Encapsulated data can then be transmitted in the downstream direction.
+
+----
+
+## MPLS Service Label Signaling Protocols
+
+Targeted LDP (T-LDP)
+- Used for Layer 2 VPN Services 
+- RFC 4447 specifies its use
+- Creates an end-to-end session between two PE routers 
+
+Multi-Protocol Border Gateway Protocol (MP-BGP)
+- Used for Layer 3 (IP) VPN Services 
+- Called Multi-Protocol due to its support for different address families other than standard IPv4
+- Based on RFC 4364
+
+----
+
+## MPLS Special Use Labels
+
+| Label Value | Label Usage               |
+|----------   |----------                 |
+| 0           | IPv4 Explicit Null        |
+| 2           | Router Alert              |
+| 3           | IPv6 Explicit Null        |
+| 4-15        | Reserved for future use   |
+
+----
+
+## Before Implicit Null - Normal Operation
+
+![img](img/15.png)
+
+R3 receives packets destined fro FEC Z with a label of 100 and always pops them.
+
+----
+
+## MPLS Implicit Null
+
+![img](img/16.png)
+
+- On R3, the result of the label lookup process for packets destined fro FEC Z is always a "pop" action.
+- If R3 wants to save some processing resources, it can request the penultimate router (R2) to send the packets with no transport label.
+- R3 expresses this by advertising a label binding for FEC Z with a value of 3.
+
+----
+
+## Penultimate Hop Popping (Result of Implicit Null Advertisement)
+
+![img](img/17.png)
+
+- Penultimate hop (R2) honors the request of R3 and pops the transport label 
+- Although the egress label value is displayed as 3, this value can never exist in the MPLS label of a data packet.
+
+## Nokia Support for Penultimate Hop Popping (PHP)
+
+- As a penultimate router, Nokia routers have always had inherent support to honor any PHP request.
+- Its possible to configure an SR OS router to advertise impllicit null as the last hop router
+- It is supported for both LDP and RSVP-TE
+- Introduced for small-scale MPLS nodes.
+
+----
+
+## MPLS Explicit Null 
+
+![img](img/18.png)
+
+- R3 still wants to sav esome CPU resources but needs the QoS information included in the EXP bits.
+- R3 sends a lebl value of 0 to router R2 
+- R3 pops the label directly without doing a label lookup; R3 records the EXP bit value for QoS processing.
+
+## Result of Explicit Null Advertisement 
+
+![img](img/19.png)
+- R2 honors the request of R3 and sends the packet with a label value of 0
+- R3 immediately pops the label when it sees a value of 0.
+
+## Nokia SR OS Support for Explicit Null 
+
+- As the penultimate router, Nokia Routers have always had the inherent support to honor any explicit null request
+- Service Router does not send any explicit null requests as the last hop 
+- CPU utilization is not a concern on the service router.
+
+----
+
+## MPLS Router Alert Label 
+
+- Used in several OAM (Operational, Adminsitration, Maintenance) applications.
+- Indicates to the receiving router that the packet must be passed to the control plane for processing.
+
+![img](img/20.png)
+

@@ -1,0 +1,240 @@
+Configure service info from R5:
+A:R5-Rae00033>config>service# info 
+----------------------------------------------
+        sdp 6 mpls create
+            far-end 10.10.10.6
+            ldp
+            keep-alive
+                shutdown
+            exit
+            no shutdown
+        exit
+        sdp 7 mpls create
+            far-end 10.10.10.7
+            ldp
+            keep-alive
+                shutdown
+            exit
+            no shutdown
+        exit
+        sdp 8 mpls create
+            far-end 10.10.10.8
+            ldp
+            keep-alive
+                shutdown
+            exit
+            no shutdown
+        exit
+        customer 1 name "1" create
+            description "Default customer"
+        exit
+        customer 200 name "200" create
+            description "VPLS Customer"
+        exit
+        epipe 10 name "epipe1" customer 1 create
+            sap 1/1/2:10 create
+                no shutdown           
+            exit
+            spoke-sdp 8:10 create
+                no shutdown
+            exit
+            no shutdown
+        exit
+        epipe 20 name "epipe2" customer 1 create
+            sap 1/1/2:20 create
+                no shutdown
+            exit
+            spoke-sdp 8:20 create
+                no shutdown
+            exit
+            no shutdown
+        exit
+        vpls 200 name "vpls1" customer 200 create
+            stp
+                shutdown
+            exit
+            sap 1/1/2:* create
+                no shutdown
+            exit
+            mesh-sdp 6:200 create
+                no shutdown
+            exit
+            mesh-sdp 7:200 create
+                no shutdown
+            exit
+            mesh-sdp 8:200 create
+                no shutdown
+            exit
+            no shutdown
+        exit
+---------------------------------------------- 
+
+
+1. Info from configure service context after 3.2
+A:R5-Rae00033>config>service# info 
+----------------------------------------------
+        sdp 6 mpls create
+            far-end 10.10.10.6
+            ldp
+            keep-alive
+                shutdown
+            exit
+            no shutdown
+        exit
+        sdp 7 mpls create
+            far-end 10.10.10.7
+            ldp
+            keep-alive
+                shutdown
+            exit
+            no shutdown
+        exit
+        sdp 8 mpls create
+            far-end 10.10.10.8
+            ldp
+            keep-alive
+                shutdown
+            exit
+            no shutdown
+        exit
+        customer 1 name "1" create
+            description "Default customer"
+        exit
+        customer 200 name "200" create
+            description "VPLS Customer"
+        exit
+        epipe 10 name "epipe1" customer 1 create
+            sap 1/1/2:10 create
+                no shutdown           
+            exit
+            spoke-sdp 8:10 create
+                no shutdown
+            exit
+            no shutdown
+        exit
+        epipe 20 name "epipe2" customer 1 create
+            sap 1/1/2:20 create
+                no shutdown
+            exit
+            spoke-sdp 8:20 create
+                no shutdown
+            exit
+            no shutdown
+        exit
+        vpls 200 name "vpls1" customer 200 create
+            stp
+                shutdown
+            exit
+            sap 1/1/2:* create
+                no shutdown
+            exit
+            mesh-sdp 6:200 create
+                no shutdown
+            exit
+            mesh-sdp 7:200 create
+                no shutdown
+            exit
+            mesh-sdp 8:200 create
+                no shutdown
+            exit
+            no shutdown
+        exit
+
+
+
+2. Output of show service 200 base 
+A:R5-Rae00033# show service id 200 base 
+===============================================================================
+Service Basic Information
+===============================================================================
+Service Id        : 200                 Vpn Id            : 0
+Service Type      : VPLS                
+MACSec enabled    : no                  
+Name              : vpls1
+Description       : (Not Specified)
+Customer Id       : 200                 Creation Origin   : manual
+Last Status Change: 02/04/2025 00:09:25 
+Last Mgmt Change  : 02/04/2025 00:09:25 
+Etree Mode        : Disabled            
+Admin State       : Up                  Oper State        : Up
+MTU               : 1514                
+SAP Count         : 1                   SDP Bind Count    : 3
+Snd Flush on Fail : Disabled            Host Conn Verify  : Disabled
+SHCV pol IPv4     : None
+Propagate MacFlush: Disabled            Per Svc Hashing   : Disabled
+Allow IP Intf Bind: Disabled
+Fwd-IPv4-Mcast-To*: Disabled            Fwd-IPv6-Mcast-To*: Disabled
+Mcast IPv6 scope  : mac-based           
+Def. Gateway IP   : None                
+Def. Gateway MAC  : None                
+Temp Flood Time   : Disabled            Temp Flood        : Inactive
+Temp Flood Chg Cnt: 0                   
+SPI load-balance  : Disabled            
+TEID load-balance : Disabled            
+Lbl Eth/IP L4 TEID: Disabled            
+Src Tep IP        : N/A                 
+Vxlan ECMP        : Disabled            
+MPLS ECMP         : Disabled            
+Ignore MTU Mismat*: Disabled            
+                                      
+-------------------------------------------------------------------------------
+Service Access & Destination Points
+-------------------------------------------------------------------------------
+Identifier                               Type         AdmMTU  OprMTU  Adm  Opr
+-------------------------------------------------------------------------------
+sap:1/1/2:30                             q-tag        1518    1518    Up   Up
+sdp:6:200 M(10.10.10.6)                  Mesh         0       8682    Up   Up
+sdp:7:200 M(10.10.10.7)                  Mesh         0       8682    Up   Up
+sdp:8:200 M(10.10.10.8)                  Mesh         0       8682    Up   Up
+===============================================================================
+* indicates that the corresponding row element may have been truncated.
+
+3. FDB from VPLS 200 
+A:R05(PE1)# show service id 200 fdb detail 
+
+===============================================================================
+Forwarding Database, Service 200
+===============================================================================
+ServId     MAC               Source-Identifier       Type     Last Change
+            Transport:Tnl-Id                         Age      
+-------------------------------------------------------------------------------
+200        0c:00:44:45:2c:02 sdp:8:200               L/0      02/04/25 00:29:44
+200        0c:00:74:56:00:02 sdp:7:200               L/390    02/04/25 00:29:50
+200        0c:00:77:bb:59:02 sap:1/1/2:*             L/0      02/04/25 00:24:26
+200        0c:00:c3:48:56:02 sdp:6:200               L/390    02/04/25 00:29:53
+-------------------------------------------------------------------------------
+No. of MAC Entries: 4
+-------------------------------------------------------------------------------
+Legend:  L=Learned O=Oam P=Protected-MAC C=Conditional S=Static Lf=Leaf
+===============================================================================
+
+
+4. Ping from both CE interfaces:
+
+A:R9-Rae00033# ping 192.168.30.4  
+PING 192.168.50.4 56 data bytes
+64 bytes from 192.168.50.4: icmp_seq=1 ttl=64 time=13.3ms.
+64 bytes from 192.168.50.4: icmp_seq=2 ttl=64 time=6.30ms.
+64 bytes from 192.168.50.4: icmp_seq=3 ttl=64 time=6.44ms.
+64 bytes from 192.168.50.4: icmp_seq=4 ttl=64 time=6.07ms.
+64 bytes from 192.168.50.4: icmp_seq=5 ttl=64 time=5.69ms.
+---- 192.168.50.4 PING Statistics ----
+5 packets transmitted, 5 packets received, 0.00% packet loss
+
+
+A:R12-Rae00033# ping 192.168.50.4
+PING 192.168.50.1 56 data bytes
+64 bytes from 192.168.50.1: icmp_seq=1 ttl=64 time=10.9ms.
+64 bytes from 192.168.50.1: icmp_seq=2 ttl=64 time=6.27ms.
+64 bytes from 192.168.50.1: icmp_seq=3 ttl=64 time=6.10ms.
+64 bytes from 192.168.50.1: icmp_seq=4 ttl=64 time=5.64ms.
+64 bytes from 192.168.50.1: icmp_seq=5 ttl=64 time=14.9ms.
+---- 192.168.50.1 PING Statistics ----
+5 packets transmitted, 5 packets received, 0.00% packet loss
+
+
+5. What command can you use to find the service type of all services configured on your PE router?
+show service service-using 
+
+6. What happens to a frame that arrives at your SAP that is larger than the service MTU?
+It will be silently dropped.

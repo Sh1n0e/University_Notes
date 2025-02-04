@@ -224,5 +224,112 @@ Columnar Objects:
   - Index field specifies the column(s) used for indexing
   - *Index* --> Used to help identify each instance of a columnar object
 - OID of a columnar object instance = OID of the object + index value 
-- 
+
 ![img](img/9.png)
+
+
+![img](img/10.png)
+
+3 instances shown in photo for tcpConnEntry:
+
+First: 1.3.6.1.2.1.6.13.1.2. *167.8.115.92* .235.176.15.53.218.240
+- This presents the instance of tcpConnEntry local address. Which is *167.8.15.92*
+
+Second: 1.3.6.1.2.1.6.13.1.4.167.8.15.92.236.* 178.67.124.15* .196
+- This presents the tcpConn RmtAdd instance. Which is 172.67.124.15
+
+Third: 1.3.6.1.2.1.6.13.1.3.167.8.15.92. *244* .181.33.16.4.227
+- This would give the instance of tcpConnLocPort 244.
+
+In each part I highlighted how the relevant information is found based on the explanation given above.
+
+> - Recall that table entries have an "index" field in its definition
+  >- Index field specifies the column(s) used for indexing
+  > - *Index* --> Used to help identify each instance of a  columnar object
+>- OID of a columnar object instance = OID of the object + index value 
+
+----
+
+## Uniqueness of OID 
+
+- OIDs of MIB models are globally unique.
+
+- OIDs of object instances are no longer unique
+
+Example:
+- Two routers both implement MIB-2
+- Both have an object instance with OID 1.3.6.1.2.1.1.3.0 - the instance of the scalar object sysUpTime
+- The system uptime of the two routers are probably different.
+
+![img](img/11.png)
+
+----
+
+# Modeling Management Information
+
+----
+
+## Management Information: Abstraction
+
+- Companies can develop proprietary MIB models
+- Management information that an agent exposes across its management interface: an *abstraction* of the managed device
+  - The abstraction - based on MIB models
+  - Information in the MIB - instantiations of these models
+
+----
+
+## Relevant & Irrelevant Information
+
+Relevant information to management - include in abstraction:
+- Device's serial number
+- Software version running on device
+- Timeout values for a particular protocol
+
+Irrelevant infromation to management - exclude from abstraction:
+- Color of the chassis
+- number of chips on the main board
+- size of last-transmitted packet
+
+----
+
+## Proper Abstraction
+
+- Finding the proper abstraction is not always easy
+- Not always obvious what information will be needed.
+  - Includes the time at which the last critical alarm occured or not?
+  - Keep packet counter statistics on each type of packet or just the sum
+
+*Q: What would happen if we include too little management information?*
+
+> - Some management decisions must be made with limited information 
+> - Fewer posibilities to fine-tune network performance because certain settings cannot be configured ("write" access)
+
+Usually suggested to include a bit more than the minimum required.
+
+*Q: What would happen if we include too much management information in the abstraction*
+
+> - Management interface can be more complex than necessary
+> - Users need to learn to interpret more pieces of management information 
+> - Memory footprint of the management agent in the device increases
+> - More effort in management application development
+
+- Too much information: too many management knobs and displays
+  - Model developers need to know the purpose of the management information
+  - Do not include a real-world aspect of a device just because it is there
+
+Finding balance is a matter of design. And to do so, these questions would be good to ask:
+
+```
+1. Why a piece of management information might be useful?
+
+2. Are there enough displays that tell network managers what is going on at the managed device?
+
+3. Are enough "knobs" provided to configure the device, to provision services over it, and to tune network performance?
+
+4. Can all the relevant management scenarios for the varios management functions can be supported with the provided management infromation?
+
+5. What is the proper granularity of the model?
+
+6. Can the model be easily extended?
+```
+

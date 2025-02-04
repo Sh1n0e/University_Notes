@@ -247,6 +247,8 @@ In each part I highlighted how the relevant information is found based on the ex
   >- Index field specifies the column(s) used for indexing
   > - *Index* --> Used to help identify each instance of a  columnar object
 >- OID of a columnar object instance = OID of the object + index value 
+>
+>Make sure to know what the index columns are because that's all you will need to enter. 
 
 ----
 

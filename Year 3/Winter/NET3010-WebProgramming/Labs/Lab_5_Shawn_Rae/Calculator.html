@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta name="author" content="Your Name">
+<title>Calculator</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f0f0f0;
+    margin: 0;
+  }
+  .calculator {
+    border: 1px solid black;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 400px;
+    background-color: black;
+  }
+  .display {
+    background-color: #222;
+    color: #fff;
+    font-size: 2em;
+    text-align: right;
+    padding: 20px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+  }
+  .keypad {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    padding: 20px;
+  }
+  button {
+    font-size: 1.2em;
+    padding: 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: cyan;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  button:hover {
+    background-color: #ddd;
+  }
+  button:active {
+    background-color: white;
+  }
+  button.operator {
+    background-color: purple;
+    color: white;
+  }
+  button.operator:hover {
+    background-color: orange;
+  }
+  button.operator:active {
+    background-color: orange;
+  }
+</style>
+</head>
+<body>
+<header>The Calculator Challenge</header>
+<div class="calculator">
+  <div class="display" id="display">
+    0
+  </div>
+  <div class="keypad">
+    <button class="function" onclick="performFunction('abs')">abs</button>
+    <button class="function" onclick="performFunction('ftToM')">ft to m</button>
+    <button class="function" onclick="performFunction('mToFt')">m to ft</button>
+    <button class="function" onclick="performFunction('sqrt')">sqrt</button>
+    <button onclick="appendNumber(7)">7</button><button onclick="appendNumber(8)">8</button>
+    <button onclick="appendNumber(9)">9</button><button class="operator" onclick="setOperator('-')">-</button>
+    <button onclick="appendNumber(4)">4</button><button onclick="appendNumber(5)">5</button>
+    <button onclick="appendNumber(6)">6</button><button class="operator" onclick="setOperator('*')">X</button>
+    <button onclick="appendNumber(1)">1</button><button onclick="appendNumber(2)">2</button>
+    <button onclick="appendNumber(3)">3</button><button class="operator" onclick="setOperator('/')">/</button>
+    <button onclick="appendNumber(0)">0</button><button class="function" onclick="clearDisplay()">C</button>
+    <button class="function" onclick="calculate()">=</button><button class="operator" onclick="setOperator('+')">+</button>
+  </div>
+</div>
+<script>
+ <!--- Initializing starting values for whenever the calculator is opened for the first time --->
+  let displayValue = '0';
+  let firstOperand = null;
+  let secondOperand = false;
+  let currentOperator = null;
+
+<!--- Arguably the most important function as everything needs to call back to this --->
+  function updateDisplay() {
+    const display = document.getElementById('display');
+    display.innerText = displayValue;
+  }
+
+<!--- This happens when C is pressed (Esentially the same as when the calculator first loads but needs to be done on demand--->
+  function clearDisplay() {
+    displayValue = '0';
+    firstOperand = null;
+    secondOperand = false;
+    currentOperator = null;
+    updateDisplay();
+  }
+
+<!--- Used every time that a button is pressed to display whatever is clicked --->
+  function appendNumber(number) {
+    if (secondOperand) {
+      displayValue = String(number);
+      secondOperand = false;
+    } else {
+      displayValue = displayValue === '0' ? String(number) : displayValue + number;
+    }
+    updateDisplay();
+  }
+
+<!--- Tells everything what to do the moment an operator is pressed. This is either +, *, /, - --->
+  function setOperator(operator) {
+    if (currentOperator && secondOperand) {
+      currentOperator = operator;
+      return;
+    }
+    if (firstOperand === null) { <!--- In the event that we don't enter a value for the first operand in any given equation, it will just display what is currently on the screen --->
+      firstOperand = parseFloat(displayValue);
+    } else if (currentOperator) {
+      const result = performCalculation(currentOperator, firstOperand, parseFloat(displayValue));
+      displayValue = String(result);
+      firstOperand = result;
+    }
+    secondOperand = true;
+    currentOperator = operator;
+    updateDisplay();
+  }
+  
+<!--- Function that runs everytime the = is pressed and changes depending on the operator using switch cases ---> 
+  function performCalculation(operator, first, second) {
+    switch (operator) {
+      case '+':
+        return first + second;
+      case '-':
+        return first - second;
+      case '*':
+        return first * second;
+      case '/':
+        return first / second;
+      default:
+        return second;
+    }
+  }
+
+<!--- Function in the event that a calculation is being made without entering a second operand --->
+  function calculate() {
+    if (currentOperator && !secondOperand) {
+      displayValue = String(performCalculation(currentOperator, firstOperand, parseFloat(displayValue)));
+      firstOperand = null;
+      currentOperator = null;
+      secondOperand = false;
+      updateDisplay();
+    }
+  }
+
+<!--- Separate function to minimize coding needed to just complete the remaining requirements: abs, sqrt, ftToM, mToFt --->
+  function performFunction(func) {
+    let result;
+    const value = parseFloat(displayValue);
+    switch (func) {
+      case 'abs':
+        result = Math.abs(value);
+        break;
+      case 'sqrt':
+        result = Math.sqrt(value);
+        break;
+      case 'ftToM':
+        result = value * 0.3048;
+        break;
+      case 'mToFt':
+        result = value / 0.3048;
+        break;
+      default:
+        return;
+    }
+    displayValue = String(result);
+    updateDisplay();
+  }
+</script>
+</body>
+</html>

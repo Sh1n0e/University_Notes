@@ -1,32 +1,4 @@
 # Lecture 4
-
-- [Lecture 4](#lecture-4)
-	- [Network Management Components](#network-management-components)
-	- [Key Concept - "Manager" \& "Agent"](#key-concept---manager--agent)
-	- [Network Devices](#network-devices)
-	- [Components of Agent](#components-of-agent)
-		- [Agent](#agent)
-		- [Agent Part 1 - Management interface](#agent-part-1---management-interface)
-	- [Management Information](#management-information)
-	- [Agent Part 2 - MIB](#agent-part-2---mib)
-	- [Agent Part 3 - Core Agent logic](#agent-part-3---core-agent-logic)
-	- [Managed Object vs. Real Resource](#managed-object-vs-real-resource)
-	- [Network Management System (NMS)](#network-management-system-nms)
-	- [Distributed Network Management](#distributed-network-management)
-	- [Management Proxy and Hierarchy](#management-proxy-and-hierarchy)
-	- [Manager - Agent - MIB Relationship](#manager---agent---mib-relationship)
-	- [Concept of Management Network](#concept-of-management-network)
-	- [Connecting NMS to Network Devices](#connecting-nms-to-network-devices)
-	- [In-band vs Out-of-band Management Network](#in-band-vs-out-of-band-management-network)
-	- [Dedicated Management Network: Pros \& Cons](#dedicated-management-network-pros--cons)
-	- [the Non-Technical aspects](#the-non-technical-aspects)
-		- [Network Management Fundamentals - Pages 93-97](#network-management-fundamentals---pages-93-97)
-	- [Management Support Organization - Tasks](#management-support-organization---tasks)
-	- [Management Support Organization - Structure](#management-support-organization---structure)
-
-
-----
-
 ## Network Management Components
 
 - Network devices

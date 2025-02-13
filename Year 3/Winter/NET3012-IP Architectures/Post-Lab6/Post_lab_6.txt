@@ -67,7 +67,7 @@ Service Id        : 300                 Vpn Id            : 0
 Service Type      : VPLS                
 MACSec enabled    : no                  
 Name              : vpls2
-Description       : (Not Specified)
+Description       : Spoke VPLS
 Customer Id       : 300                 Creation Origin   : manual
 Last Status Change: 02/12/2025 15:53:16 
 Last Mgmt Change  : 02/12/2025 15:58:25 
@@ -126,7 +126,7 @@ Legend:  L=Learned O=Oam P=Protected-MAC C=Conditional S=Static Lf=Leaf
 ===============================================================================
 
 
-A:Rae00033-R1# show router ldp bindings service  service-id 300 
+A:Rae00033-R1# show router ldp bindings service service-id 300 
 
 ===============================================================================
 LDP Bindings (IPv4 LSR ID 10.10.10.1)
@@ -180,7 +180,7 @@ Peer                                            SvcId       SDPId
 No Matching Entries Found
 ===============================================================================
 
-A:R04(P4)# show router ldp bindings services  service-id 300 
+A:R04(P4)# show router ldp bindings services service-id 300 
 
 ===============================================================================
 LDP Bindings (IPv4 LSR ID 10.10.10.4)
@@ -234,3 +234,4 @@ Peer                                            SvcId       SDPId
 No Matching Entries Found
 ===============================================================================
 
+R1 - R4 ---> 

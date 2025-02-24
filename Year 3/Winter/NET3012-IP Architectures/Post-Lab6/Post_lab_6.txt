@@ -1,0 +1,237 @@
+A:Rae00033-R1>config>service# info 
+----------------------------------------------
+        sdp 2 mpls create
+            far-end 10.10.10.2
+            ldp
+            keep-alive
+                shutdown
+            exit
+            no shutdown
+        exit
+        sdp 3 mpls create
+            far-end 10.10.10.3
+            ldp
+            keep-alive
+                shutdown
+            exit
+            no shutdown
+        exit
+        sdp 4 mpls create
+            far-end 10.10.10.4
+            ldp
+            keep-alive
+                shutdown
+            exit
+            no shutdown
+        exit
+        sdp 5 mpls create
+            far-end 10.10.10.5
+            ldp
+            keep-alive
+                shutdown
+            exit
+            no shutdown
+        exit
+        customer 1 name "1" create    
+            description "Default customer"
+        exit
+        customer 300 name "300" create
+            description "Spoke VPLS Customer"
+        exit
+        vpls 300 name "vpls2" customer 300 create
+            stp
+                shutdown
+            exit
+            mesh-sdp 2:300 create
+                no shutdown
+            exit
+            mesh-sdp 3:300 create
+                no shutdown
+            exit
+            mesh-sdp 4:300 create
+                no shutdown
+            exit
+            spoke-sdp 5:300 create
+                no shutdown
+            exit
+            no shutdown
+        exit
+----------------------------------------------
+
+A:Rae00033-R1# show service id 300 base 
+
+===============================================================================
+Service Basic Information
+===============================================================================
+Service Id        : 300                 Vpn Id            : 0
+Service Type      : VPLS                
+MACSec enabled    : no                  
+Name              : vpls2
+Description       : Spoke VPLS
+Customer Id       : 300                 Creation Origin   : manual
+Last Status Change: 02/12/2025 15:53:16 
+Last Mgmt Change  : 02/12/2025 15:58:25 
+Etree Mode        : Disabled            
+Admin State       : Up                  Oper State        : Up
+MTU               : 1514                
+SAP Count         : 0                   SDP Bind Count    : 4
+Snd Flush on Fail : Disabled            Host Conn Verify  : Disabled
+SHCV pol IPv4     : None
+Propagate MacFlush: Disabled            Per Svc Hashing   : Disabled
+Allow IP Intf Bind: Disabled
+Fwd-IPv4-Mcast-To*: Disabled            Fwd-IPv6-Mcast-To*: Disabled
+Mcast IPv6 scope  : mac-based           
+Def. Gateway IP   : None                
+Def. Gateway MAC  : None                
+Temp Flood Time   : Disabled            Temp Flood        : Inactive
+Temp Flood Chg Cnt: 0                   
+SPI load-balance  : Disabled            
+TEID load-balance : Disabled            
+Lbl Eth/IP L4 TEID: Disabled            
+Src Tep IP        : N/A                 
+Vxlan ECMP        : Disabled            
+MPLS ECMP         : Disabled            
+Ignore MTU Mismat*: Disabled            
+                                      
+-------------------------------------------------------------------------------
+Service Access & Destination Points
+-------------------------------------------------------------------------------
+Identifier                               Type         AdmMTU  OprMTU  Adm  Opr
+-------------------------------------------------------------------------------
+sdp:2:300 M(10.10.10.2)                  Mesh         0       8682    Up   Up
+sdp:3:300 M(10.10.10.3)                  Mesh         0       8682    Up   Up
+sdp:4:300 M(10.10.10.4)                  Mesh         0       8682    Up   Up
+sdp:5:300 S(10.10.10.5)                  Spok         0       8682    Up   Up
+===============================================================================
+* indicates that the corresponding row element may have been truncated.
+
+----------------------------------------------------------------------------------
+
+A:Rae00033-R1# show service id 300 fdb detail 
+
+===============================================================================
+Forwarding Database, Service 300
+===============================================================================
+ServId     MAC               Source-Identifier       Type     Last Change
+            Transport:Tnl-Id                         Age      
+-------------------------------------------------------------------------------
+300        0c:00:31:3d:94:02 sdp:4:300               L/0      02/12/25 16:05:50
+300        0c:00:31:d5:f0:02 sdp:5:300               L/0      02/12/25 16:05:38
+300        0c:00:72:c9:34:02 sdp:3:300               L/0      02/12/25 16:05:43
+300        0c:00:b7:e6:47:02 sdp:2:300               L/0      02/12/25 16:05:38
+-------------------------------------------------------------------------------
+No. of MAC Entries: 4
+-------------------------------------------------------------------------------
+Legend:  L=Learned O=Oam P=Protected-MAC C=Conditional S=Static Lf=Leaf
+===============================================================================
+
+
+A:Rae00033-R1# show router ldp bindings service service-id 300 
+
+===============================================================================
+LDP Bindings (IPv4 LSR ID 10.10.10.1)
+             (IPv6 LSR ID ::)
+===============================================================================
+Label Status:
+        U - Label In Use, N - Label Not In Use, W - Label Withdrawn
+        S - Status Signaled Up,  D - Status Signaled Down, e - Label ELC
+        WP - Label Withdraw Pending, BU - Alternate For Fast Re-Route
+Service Type:
+        E - Epipe Service, V - VPLS Service, M - Mirror Service
+        A - Apipe Service, F - Fpipe Service, I - IES Service, R - VPRN service
+        P - Ipipe Service, C - Cpipe Service
+FEC Flags:
+        LF - Lower FEC, UF - Upper FEC, M - Community Mismatch,
+        BA - ASBR Backup FEC
+===============================================================================
+LDP Service FEC 128 Bindings
+===============================================================================
+Type                                          VCId       SDPId             LMTU
+Peer                                          SvcId      IngLbl            RMTU
+                                                         EgrLbl            
+-------------------------------------------------------------------------------
+V-Eth                                         300        2                 1500
+10.10.10.2:0                                  300        524279U           1500
+                                                         524276            
+
+V-Eth                                         300        3                 1500
+10.10.10.3:0                                  300        524278U           1500
+                                                         524276            
+
+V-Eth                                         300        4                 1500
+10.10.10.4:0                                  300        524277U           1500
+                                                         524276            
+
+V-Eth                                         300        5                 1500
+10.10.10.5:0                                  300        524276U           1500
+                                                         524274S           
+
+-------------------------------------------------------------------------------
+No. of VC Labels: 4
+===============================================================================
+
+===============================================================================
+LDP Service FEC 129 Bindings
+===============================================================================
+SAII                                            AGII        IngLbl         LMTU
+TAII                                            Type        EgrLbl         RMTU
+Peer                                            SvcId       SDPId          
+-------------------------------------------------------------------------------
+No Matching Entries Found
+===============================================================================
+
+A:R04(P4)# show router ldp bindings services service-id 300 
+
+===============================================================================
+LDP Bindings (IPv4 LSR ID 10.10.10.4)
+             (IPv6 LSR ID ::)
+===============================================================================
+Label Status:
+        U - Label In Use, N - Label Not In Use, W - Label Withdrawn
+        S - Status Signaled Up,  D - Status Signaled Down, e - Label ELC
+        WP - Label Withdraw Pending, BU - Alternate For Fast Re-Route
+Service Type:
+        E - Epipe Service, V - VPLS Service, M - Mirror Service
+        A - Apipe Service, F - Fpipe Service, I - IES Service, R - VPRN service
+        P - Ipipe Service, C - Cpipe Service
+FEC Flags:
+        LF - Lower FEC, UF - Upper FEC, M - Community Mismatch,
+        BA - ASBR Backup FEC
+===============================================================================
+LDP Service FEC 128 Bindings
+===============================================================================
+Type                                          VCId       SDPId             LMTU
+Peer                                          SvcId      IngLbl            RMTU
+                                                         EgrLbl            
+-------------------------------------------------------------------------------
+V-Eth                                         300        1                 1500
+10.10.10.1:0                                  300        524276U           1500
+                                                         524277            
+
+V-Eth                                         300        2                 1500
+10.10.10.2:0                                  300        524279U           1500
+                                                         524278            
+
+V-Eth                                         300        3                 1500
+10.10.10.3:0                                  300        524278U           1500
+                                                         524277            
+
+V-Eth                                         300        8                 1500
+10.10.10.8:0                                  300        524277U           1500
+                                                         524274S           
+
+-------------------------------------------------------------------------------
+No. of VC Labels: 4
+===============================================================================
+
+===============================================================================
+LDP Service FEC 129 Bindings
+===============================================================================
+SAII                                            AGII        IngLbl         LMTU
+TAII                                            Type        EgrLbl         RMTU
+Peer                                            SvcId       SDPId          
+-------------------------------------------------------------------------------
+No Matching Entries Found
+===============================================================================
+
+R1 - R4 ---> 

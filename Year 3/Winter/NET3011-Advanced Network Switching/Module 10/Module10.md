@@ -128,3 +128,12 @@ VNI is a 24-bit identifier which allows for up to 16 million VXLAN segments to c
 - The new format is called VXLAN Group Policy Option (VXLAN-GPO). The new fields in the VXLAN-GPO packet format include the following:
   - Group Policy ID - 16 bit identifier thaat is used to carry the SGT tag
   - Group Based Policy Extension Bit (G Bit) - 1 bit field, when set to 1, indiciates an SGT tag is being carried within the Group Policy ID field and is set to 0 when it is not.
+
+----
+
+## Policy Frame
+
+- SD-Access fabric policy plane is based on Cisco TrustSec (CTS). CTS SGT tags are assigned to authenticated groups of users or end devices. Network policy (for example, aCLS, QoS) is then applied throughout the SD-Access fabric, based on the SGT tag instead of a network address (MAC, IPv4 or IPv6)
+- TrustSec SGT tags provide several advantages for Cisco SD-Access, such as: Network address-independent group-based policies based on SGT tags rather than MAC, IPv4, or IPv6 addresses, which reduces complexity.
+----
+

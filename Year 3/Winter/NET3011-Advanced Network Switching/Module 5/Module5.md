@@ -109,7 +109,7 @@ SUPPORTS BOTH INTERFACE AND OBJECT TRACKING
   - Backup router: takes over when master fails 
 
 - Preemption is enabled by default
-- MAC address format: 0000.5e00.01xx
+- MAC address format: 01.00.5E.xx
 - Uses the multicast address 224.0.0.18
 
 There are two versions of VRRP:

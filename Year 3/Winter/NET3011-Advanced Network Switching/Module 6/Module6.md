@@ -1,6 +1,4 @@
-Here's a well-structured Markdown version including relevant configurations:
 
-```md
 # **IPv4 Multicast - Module 6 (NET-3011)**  
 
 ## **1. Multicast Fundamentals**  

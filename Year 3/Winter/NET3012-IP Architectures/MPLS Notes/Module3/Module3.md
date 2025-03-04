@@ -132,4 +132,3 @@ In redundant networks, a router may receive multiple label mapping messages from
 2. Consequence of using Liberal Label Retention (all label bdingings are kept in the LIB)
 3. R4 has chosen R6 as the active next-hop for 10.10.10.6/32; therefore, tonly the entry for R6 has an Egress Interface and Egress next-hop IP address.
 
-

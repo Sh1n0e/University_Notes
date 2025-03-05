@@ -28,3 +28,32 @@
 
 ### PATH Message Flow
 
+- Router sends a PATH message in the downstream direction and requests labels to be allocated along the path, in order to have an LSP to a tail-end router.
+  - Head-end router is the ingress router of the tunnel and the egress router is called the Tail-end
+
+### Reservation Message Flow
+
+- RESV messages are sent in the upstream direction and labels are allocated at each hop.
+- When the head-end router receives the RESV message from ts downstream neighbor, the LSP is brought up.
+
+### Prerequisites for Configuring RSVP-TE LSP
+
+- Ensure proper functioning of hardware 
+- Configure network interfaces
+- Configure IGP
+- Enable MPLS context
+- Configure the interfaces for MPLS
+- Enable the RSVP content
+
+Interfaces need to be enabled for both MPLS and RSVP on the main and every other router these messages will go through.
+
+### Enabling and verifying MPLS and RSVP 
+
+```
+A:Admin@R1# configure router mpls
+A:Admin@R1# configure > Router > mpls > no shutdown
+
+A:Admin@R1# configure router rsvp
+A:Admin@R1# configure > Router > rsvp > no shutdown
+```
+

@@ -130,5 +130,116 @@ In redundant networks, a router may receive multiple label mapping messages from
 
 1. Label mappings from R2 and R5 are written into the FIB Egress Label column
 2. Consequence of using Liberal Label Retention (all label bdingings are kept in the LIB)
-3. R4 has chosen R6 as the active next-hop for 10.10.10.6/32; therefore, tonly the entry for R6 has an Egress Interface and Egress next-hop IP address.
+3. R4 has chosen R6 as the active next-hop for 10.10.10.6/32; therefore, only the entry for R6 has an Egress Interface and Egress next-hop IP address.
 
+### Label Bindings Received on R1 (Ingress LER)
+
+![img](img/11.png)
+
+Eventually in the given context above
+
+R1 receives separate label mapping messagees for prefix 10.01.10.6/32 from both of its peers (R2 and R3).
+
+It must choose and populate one of them in the LFIB
+
+![img](img/12.png)
+
+From the output above for LDB bindings we can see:
+1. R1 receives a label binding for prefix 10.10.10.6/322 from R2 (524283)
+2. R4 receives a label binding for prefix 10.10.10.6/32 from R3 (524284)
+
+An egrell label and interface must be chosen from the two alternatives in which the FIB of R1 gets checked for the IP next hop of the prefix 10.10.10.6/32.
+
+Since R2 is identified as the next-hop, R1 installs the label it received from R2 in its LFIB as the active egress label (this includes the physical interface and next-hop IP address).
+
+### Data Plane Revisited - Label Push Operation on R1
+
+![img](img/13.png)
+
+After the label distribution is completed in the control plane, data traffic can be label switched using the label forwarding entries in the LFIB.
+
+In this case:
+- R1 is the ingress LER
+- Incoming data packets are labeled with MPLS value of 524283 and forwarded on port 1/1/4 to next-hop 10.1.2.2 implying a push operation
+
+
+### Swap operation
+
+Data traffic that arrives will be swapped out and transmitted with a new egress label (can be seen in show router ldp bindings active)
+
+This process will repeat as a packet gets sent throughout the network until it reaches a given destination (R6) to which the transport label will be popped and the router will process remaining labels.
+
+----
+
+
+## OAM Tools
+
+### LSP Ping
+
+- Used in Classic CLI
+- Validates reachability of a given prefix through LDP tunnel
+- Tests LSP which is in one direction only 
+- MUST specify "prefix"
+- Only sends one packet by default
+
+Details:
+- Uses MPLS Echo Requests and plain ICMP Echo reply packets
+- MPLS Echo Requests are sent encapsulated within the MPLS labels that are signaled for the target prefix
+  - Sent over UDP with destination port 3503
+- TTL value is set to 255
+- Echo Request message contains the target FEC value that the egress router needs to check
+
+Replies that are sent back dont't have any MPLS labels.
+
+RTT = Round Trip Time, which is a measure of the total time delay between sending the echo request and receiving the echo reply packet.
+
+RC = Return Code, which is used by the egress router to indicate the status of the prefix; that is, whether it is under normal operational or failure conditions.
+
+
+### LSP-Traceroute
+
+- Supported on classic CLI
+- gathers hop information along the tunnel's path 
+- Sends separate request packets per downstream router 
+- MPLS TTL values are incremented at each request
+- RC values indicate the return codes.
+
+----
+
+## Equal-Cost Multi-Path (ECMP)
+
+When the total IGP cost to get from a particular source to a particular destination, the paths are referred to as Equal-Cost Multi-Path.
+
+On Nokia Service Routers, the tie-breaker rules state that the path with the lowest next-hop, irectly connected interface address be used as the active path on the data plane. (This will also affect LDP to do the same due to its reliance on IGP)
+
+### Enabling ECMP
+
+```
+To be configured at global level for all applicable protocols (OSPF, ISIS,RIP,LDP)
+
+A:admin@R1# router ecmp
+
+ecmp <number>
+<number> - <1-64>
+Default - 1
+```
+
+- A maximum of 64 ECMP routes can be confgiured 
+- All ECMP routes must have been learned from the same routing protocol
+- Multiple next-hops are installed in the Forwarding table for the same prefix, if the total end-to-end costs are equal 
+- LDP installs multiple entries in the LFIB for the prefix with different egress labels received from the ECMP peers.
+
+Below is the LFIB of a router with ECMP enabled.
+
+![img](img/14.png)
+
+- The FIB contains two entries for destination 10.10.10.6/32 with R2 and R3 as next hops.
+- They are also set with push label operations due to the fact that they are equal cost.
+
+### Data Forwarding with ECMP Enabled
+
+![img](img/15.png)
+
+- Since routers use liberal label retention, R1's LIB already contains two labels from (one from R2 and the other from R3)
+- With ECMP enabled, R1 installs two forwarding entries in the FIB and LFIB
+- Internal hashin algorithm distributes the traffic flows across the two links in a load balancing fashion.

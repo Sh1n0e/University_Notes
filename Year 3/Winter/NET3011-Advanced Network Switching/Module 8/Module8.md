@@ -24,6 +24,15 @@
 
 ### **NetFlow Configuration & Verification**
 - Configuration involves enabling NetFlow on an interface and specifying a flow collector.
+
+```
+R1(config)# ip flow-export version 9 
+R1(config)# ip flow-export destination <address>
+R1(config)# configure interface <int>
+R1(config-if)# ip flow ingress
+R1(config-if)# ip flow egress
+R1(config-if)# end 
+```
 - Verification commands:
   - `show ip flow interface` (enabled interfaces)
   - `show ip flow` (export destination)
@@ -51,17 +60,74 @@
 - `show flow exporter <name>`
 
 ---
+```
+!! Configuring Custom flow record
+
+R1(config)# flow record CCNP8-CUSTOM-OUT
+R1(config-flow-record)# description Custom Flow Record for outbound traffic
+R1(config-flow-record)# match ipv4 destination address 
+R1(config-flow-record)#match transport destination-port 
+R1(config-flow-record)# collect counter bytes
+R1(config-flow-record)# collect counter packets
+
+R1# show flow record CCNP8-CUSTOM-OUT
+
+!! Configuring custom flow EXPORTER
+
+R1(config)# flow exporter CCNP8-COLLECTOR-HOST
+R1(config-flow-exporter)# destination 182.168.1.50
+R1(config-flow-exporter)# export-protocol netflow-v9
+R1(config-flow-exporter)# transport UDP 9999
+R1(config-flow-exporter)# end
+
+R1# show flow exporter CCNP8-COLLECTOR-HOST
+
+!! Cofngiuring Flow monitor
+R1(config)# flwo monitor CCNP8-OUTBOUND-MONITOR 
+R1(config-flow-monitor)# record CCNP8-CUSTOM-OUT
+R1(config-flow-monitor)# cache timeout active 30 
+R1(config-flow-monitor)# exporter CCNP8-COllector-HOST
+R1(config-flow-monitor)# end
+
+R1(config)# interface <int>
+R1(config-if)# ip flow monitor CCNP8-OUTBOUND-MONITOR output
+R1(config-if)# end
+
+R1# show flow monitor CCNP8-OUTBOUND-MONITOR cache
+```
+
+### Key notes about flow exporter:
+1. define flow exporter name
+2. set useful description
+3. specify destination of the flow exporter to be used 
+4. specify version to export 
+5. specify UDP port (Port 9999 is default)
+
+### key notes for flow monitor:
+1. define a flow monitor name 
+2. descrition
+3. specify record to be used 
+4. specify ache timeout of 30 seconds for active connections
+5. assign exporter to the monitor.
+
+- Multiple flow monitors of different traffic types can be applied for a given interface and diretions
+- Multiple flow monitors of the same traffic type cannot be applied for a given interface and direction.
+
+---
 
 ## **IP SLA (Service Level Agreement)**
 - IP SLA is a Cisco feature used to measure network performance.
 - Provides proactive monitoring with synthetic traffic tests.
 
 ### **IP SLA Measurements**
-- **Latency (one-way & round-trip delay)**
-- **Jitter (packet delay variance)**
-- **Packet Loss**
-- **Network Availability**
-- **Application Performance (VoIP, HTTP, DNS, etc.)**
+- Network resource availability 
+- Response time
+- One-way delay
+- Round trip delay 
+- Jitter 
+- Packet loss 
+- Voice-quality scoring
+- Application performance
 
 ### **IP SLA Components**
 - **IP SLA Source**: Cisco router sending probes.

@@ -150,6 +150,8 @@ e. it POPs the outer label and forwards the data packet to the downstream router
 
 Correct answer: e
 
+**label 3 = implicit null --> and can only be sent by the egress router for penultimate label popping**
+
 11. Which of the following is an advantage of LDP over RSVP-TE as an MPLS label signalling protocol
 
 ```

@@ -57,3 +57,67 @@ A:Admin@R1# configure router rsvp
 A:Admin@R1# configure > Router > rsvp > no shutdown
 ```
 
+Done because both contexts are disabled by default.
+
+### LSP and LSP-Path
+
+![img](img/1.png)
+
+- An RSVP-TE based LSP can have multiple associated LSP-Paths
+- One primary and seven secondary paths can be defined for redundancy 
+- One LSP-Path is active at any given time (referred to as the primary path)
+
+An LSP can also have Fast Reroute detour or bypass tunnels to recover traffic in the fastest way possible. (Covered further in Module 6)
+
+### LSP Path configuration options
+
+- At least one path definition is needed for an LSP
+- Path definition may contain a list of nodes that the path must traverse
+  - Explicitly defined as "loose" or "strict" (Module 5)
+  - Empty list with no explicit hops
+- A path definintion can be used multiple times in different LSPs, but cannot be used more than once per LSP, whether primary or secondary.
+
+### RSVP Path Messages
+
+PATH messages uses end-to-end addressing with a "Router Alert" option to instruct each other along the path to process the RSVP content in the control plane
+
+**If the RSVP message does not list any hops, the IGP forwaring table is used to forward the PATH message at each router.**
+
+### Forwarding the PATH Message from router R1 to router R2
+
+![img](img/2.png)
+
+1. R1 creates the PATH message and a Path State Block (PSB)
+2. R1 stores the PATH message in the PSB and forwards the mesage to the next hop
+3. HOP contains R1's egress interface IP address
+4. LABEL REQUEST object indicates that R1 expects a label
+
+### From R2 to R4
+
+![img](img/3.png)
+![img](img/4.png)
+
+R2:
+1. Receives the PATH message
+2. Creates the PSB
+3. Stores the PATH message in the PSB
+4. Looks up destination in FIB
+5. Regenerates and forwards the PATH message
+
+### End-to-end Forwarding of the PATH message
+
+![img](img/5.png)
+
+- PATH messages are forwarded downstream to R6
+- A Path State Block is created at each hop, storing the PATH message sent by the upstream router
+- R6 is the tunnel destination
+- R6 needs to send a RESV message back to R4
+
+### Forwarding the RESV message from R6 to R4
+
+![img](img/6.png)
+
+- R6 allocates a label (524287) and sends back a RESV message
+- Destination IP address is the upstream router's egress interface IP address (advertised previously in the HOP object of the PATH message and stored in the PSB)
+
+### Creating the RSVP session on R6

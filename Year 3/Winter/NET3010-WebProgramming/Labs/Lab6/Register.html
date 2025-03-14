@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="extension.css"> <!-- Link to your stylesheet -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Shawn Rae">
+    <title>User Registration</title>
+</head>
+<body>
+    <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="aboutme.html">About</a></li>
+        <li><a href="service.html">Service</a></li>
+        <li><a href="consult.html">Book A Consultation</a></li>
+        <li><a href="login.html">Login</a></li>
+    </ul>
+
+    <div class="registration-form">
+        <h2>User Registration</h2>
+        <form id="registration-form">
+            <!-- Name Field -->
+            <label for="name">Full Name:</label>
+            <input type="text" id="name" name="name">
+            <span class="error" id="name-error"></span>
+
+            <!-- Email Field -->
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email">
+            <span class="error" id="email-error"></span>
+
+            <!-- Referral Field -->
+            <label>Referred by:</label>
+            <div>
+                <input type="radio" name="referral" value="social-media"> Social Media<br>
+                <input type="radio" name="referral" value="advertising"> Advertising<br>
+                <input type="radio" name="referral" value="word-of-mouth"> Word of Mouth<br>
+                <input type="radio" name="referral" value="internet-search"> Internet Search<br>
+                <input type="radio" name="referral" value="other"> Other
+            </div>
+            <div id="other-referral" class="referral-other">
+                <label for="other-referral-text">Please specify:</label>
+                <input type="text" id="other-referral-text" name="other-referral-text">
+                <span class="error" id="other-referral-error"></span>
+            </div>
+            <span class="error" id="referral-error"></span>
+
+            <!-- Submit Button -->
+            <button type="submit">Register</button>
+        </form>
+    </div>
+
+    <script>
+        // Form Validation
+        document.getElementById('registration-form').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent form submission
+            let isValid = true;
+
+            // Validate Name
+            const name = document.getElementById('name').value;
+            if (!name) {
+                document.getElementById('name-error').textContent = 'Name is required.';
+                isValid = false;
+            } else {
+                document.getElementById('name-error').textContent = '';
+            }
+
+            // Validate Email
+            const email = document.getElementById('email').value;
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailPattern.test(email)) {
+                document.getElementById('email-error').textContent = 'Please enter a valid email address.';
+                isValid = false;
+            } else {
+                document.getElementById('email-error').textContent = '';
+            }
+
+            // Validate Referral
+            const referral = document.querySelector('input[name="referral"]:checked');
+            if (!referral) {
+                document.getElementById('referral-error').textContent = 'Please select a referral source.';
+                isValid = false;
+            } else {
+                document.getElementById('referral-error').textContent = '';
+                if (referral.value === 'other') {
+                    const otherReferral = document.getElementById('other-referral-text').value;
+                    if (!otherReferral) {
+                        document.getElementById('other-referral-error').textContent = 'Please specify the referral source.';
+                        isValid = false;
+                    } else {
+                        document.getElementById('other-referral-error').textContent = '';
+                    }
+                }
+            }
+
+            // If all fields are valid, submit the form
+            if (isValid) {
+                alert('Form submitted successfully!');
+                // Here you would typically send the form data to a server
+            }
+        });
+
+        // Show/hide "Other" text input based on referral selection
+        document.querySelectorAll('input[name="referral"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                const otherInput = document.getElementById('other-referral');
+                if (this.value === 'other') {
+                    otherInput.style.display = 'block';
+                } else {
+                    otherInput.style.display = 'none';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

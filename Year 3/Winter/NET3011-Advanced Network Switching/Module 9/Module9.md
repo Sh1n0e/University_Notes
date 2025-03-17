@@ -106,3 +106,89 @@ If an endpoint that does not support 802.1X tries to connect to the network, it 
 
 # Cisco TrustSec
 
+Next-generation access control enforcement solution to aid in scalability to combat challenged related to maintaining firewall rules and ACLs by using SGT tags.
+
+**SGT** - 16 bit value that **Identity Service Engine** assigns to the Endpoint device, or upon user login
+
+TrustSec uses SGT tags to **<u>perform ingress tagging and egress filtering**</u> to enforce access control policy.
+
+ISE assigns SGT tags to devices that are successfully authenticated and authorized through 802.1X, MAB or WebAuth.
+
+Tag assignment is delivered to the authenticator as an authorization option. After the SGT tag is assigned, an access enforcement policy <u>**Based on the SGT tag can be applied at any egress point of the TrustSec Network.</u>** 
+
+Tag Represents the context of the user, device, use case, or function.
+
+Configuration occurs in 3 phases:
+1. Ingress classification 
+2. Propagation 
+3. Egress encforcement 
+
+### Ingress classification 
+
+The process of assigning SGT tags to users, endpoints, or other resources as they ingress into the TrustSec network which can happen in one of two ways:
+
+1. **Dynamic Assignment** - The SGT is assigned dynamically and can be downloaded as an authorization option from ISE when using 802.1X, MAB, or WebAuth.
+2. **Static Assignment** - In environments such as a data center that do not require 802.1X, MAB, or WebAuth, dynamic assignment is not posssible, like servers.
+
+Static assignment on a device can be one of the following:
+- IP to SGT tag 
+- Subnet to SGT tag 
+- VLAN to SGT tag 
+- Layer 2 interface to SGT tag
+
+
+### SGT Propagation "Native/Inline and SXP"
+
+Communicates the mappings to the TrustSec network devices that will enforce policies based on SGT tags
+
+Two main methods:
+1. Native Tagging 
+2. Cisco-created protocol 
+
+**Native (inline) tagging** - a switch inserts the **SGT tag** inside a frame to allow upstream devices to read and apply policy.
+
+![img](img/2.png)
+
+**SXP Propagation** - TCP based peer-to-peer protocol used for network devices that do not support SGT native/inline tagging in hardware.
+
+The access layer device performs **authentication** of external source devices to determine the appropriate **SGTs** for ingress packets.
+
+Non-inline tagging switches also have an SGT mapping database to check packets against an enforce policy.
+
+**SXP peer that sends IP-to-SGT bindings is called a <u>speaker</u>**
+
+**IP-to-SGT receiver is called a <u>listener</u>**.
+
+SXP connections can be single-hop or multi-hop.
+
+### Egress Enforcement 
+
+**Policies can be enforced at the <u>egress</u> point of the TrustSec network.**
+
+There are multiple ways to enforce traffic based on the SGT tag, and they can be divided into two major types:
+1. Seucirty Group ACL (SGACL) - provides enforcement on routers and switches. Provides filtering and always based on source and destination SGT tags.
+2. Security Group Firewall (SGFW) - Provides enforcement on firewalls. Requires tag-based rules to be defined locally on the firewall.
+
+![img](img/3.png)
+
+----
+
+# MACsec
+
+IEEE 802.1AE standards-based Layer 2 hop-by-hop hardware encryption method.
+
+Provides Encryption for <u>Layer 2 wired Ethernet network</u> algorithm used fro encryption is GCM-AES-128 to offer integrity and confidentiality.
+
+**<u>MACsec requires the clients to be authenticated via 802.1X</u>**
+
+Traffic is encrypted only on the wire between two MACsec peers and is unencypted as it is processed internally within the switch. This allows the switch to look into the inner packets for things like SGT tags to perform packet enforcement or QoS prioritization.
+
+There are two MACsec keying mechanisms available:
+1. **Security Association Protocol (SAP)** - This is a **Proprietary** Cisco keying protocol. Used ONLY between Cisco switches.
+2. **Macsec Key Agreement (MKA) Protocol** - <u>Standards based</u> keying protocol that provides the required session keys and manages the required encryption keys, it is **<u> only used between hosts and switches</u>**
+
+Based on the Ethernet frame format; however, an additional 16-byte MACsec Seecurity Tag field (802.1AE header) and a 16-byte integrity Check Value (ICV) field are added.
+
+![img](img/4.png)
+
+![img](img/5.png)

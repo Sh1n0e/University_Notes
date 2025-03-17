@@ -46,7 +46,7 @@ SW(onfig-sg-radius)# server 10.1.1.1 auth-p 1812 acct-p 1813
 
 Three steps to complete the setup:
 1. enable 802.1X globally
-2. configure an autehntication list
+2. configure an authentication list
 3. Apply to an access layer 2 port
 
 ### EAP Authentication Methods Comparison

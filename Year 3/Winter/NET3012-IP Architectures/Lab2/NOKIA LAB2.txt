@@ -1,0 +1,123 @@
+// - to enter classic CLI
+
+!! Lab 1:
+Setting up:
+configure system name R5-rae00033
+configure card # card-type {card-type from show command} - Configuring network card
+configure rotuer interface {name} address {address}/{prefix} - Create address
+configure router interface {name} port {port number} - Assign address to a port
+configure port {port number} no shutdown
+admin save
+
+verification:
+show router interface - show all interfaces
+show card - show network cards
+
+
+Setting up OSPF:
+configure router router-id {number} - Creating router ID for OSPF
+configure router ospf area {area-id} interface {interface name} - Assigning interface to OSPF 
+configure router ospf no shutdown
+admin save
+
+verification:
+show router ospf interface
+show router ospf routes
+show ospf neighbor
+
+
+!! Lab 2:
+setting up ldp:
+
+configure router ldp interface-parameters interface toR1 ipv4
+configure router ldp interface-parameters interface toR6 ipv4
+configure router ldp interface-parameters interface toR9 ipv4 
+admin save
+
+verification:
+show router ldp interface
+show router ldp session
+show router tunnel-table
+show router ldp bindings active
+oam ldp-treetrace prefix 10.10.10.6/32 
+oam lsp-ping ldp prefix 10.10.10.6/32
+
+Setting up eMCP
+configure router ecmp {x}
+
+
+!! Lab 4:
+
+
+
+
+!! Lab 5:
+
+
+
+!! Lab 6:
+
+
+
+
+!! Lab 7:
+
+PE:
+!! Configuring IES interface on PE and add to OSPF 
+configure service customer 500 name 500 create 
+	description "IES Customer"
+exit
+configure service ies 500 name "IES 1" customer 500 create
+	interface "to-Site1" create 
+		address 172.16.1.1/24
+		sap 1/1/2:60 create 
+		exit
+	exit 
+	no shutdown
+exit 
+
+!! Adding interface to OSPF 
+configure router ospf area 0 interface to-Site1 
+	no shutdown  
+	exit 
+
+!! Fixing MTU Value to ensure it works (IES = 1518, so set MTU to 1500)
+A:R9-Rae00033# configure router ospf area 0 
+A:R9-Rae00033>config>router>ospf>area# interface "toR5-6" 
+A:R9-Rae00033>config>router>ospf>area>if# mtu 1500 
+*A:R9-Rae00033>config>router>ospf>area>if# exit 
+*A:R9-Rae00033>config>router>ospf>area# exit 
+*A:R9-Rae00033# admin save 
+
+
+!! verification 
+configure router ospf 
+	info 
+
+show router ospf interface 
+
+CE:
+!! Creating a loopback interface and assign it to VLAN 60 
+configure router interface <loopback> address 172.16.x.2/24
+configure router interface <loopback> port 1/1/2:60 (Assigns to VLAN 60)
+configure router interface <loopback>
+	loopback
+	
+!! verification
+show router interface 
+
+
+!! Lab 8:
+
+CE:
+!! Configure interface on CE and add to OSPF 
+configure router interface to_IES_2
+	no shutdown 
+	port 1/1/2:70
+	address 172.17.1.2/24
+	exit
+
+configure router ospf area 0 interface to_IES_2 
+	exit
+
+P: 

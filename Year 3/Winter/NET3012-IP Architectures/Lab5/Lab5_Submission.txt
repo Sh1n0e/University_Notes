@@ -1,0 +1,103 @@
+A:R5-Rae00033>config>service>vpls# info 
+----------------------------------------------
+            stp
+                shutdown
+            exit
+            sap 1/1/2:40 create
+                no shutdown
+            exit
+            mesh-sdp 6:200 create
+                no shutdown
+            exit
+            mesh-sdp 7:200 create
+                no shutdown
+            exit
+            mesh-sdp 8:200 create
+                no shutdown
+            exit
+            no shutdown
+----------------------------------------------
+
+A:R5-Rae00033# show service id 200 base 
+
+===============================================================================
+Service Basic Information
+===============================================================================
+Service Id        : 200                 Vpn Id            : 0
+Service Type      : VPLS                
+MACSec enabled    : no                  
+Name              : 200
+Description       : (Not Specified)
+Customer Id       : 200                 Creation Origin   : manual
+Last Status Change: 02/03/2025 16:11:47 
+Last Mgmt Change  : 02/03/2025 16:11:33 
+Etree Mode        : Disabled            
+Admin State       : Up                  Oper State        : Up
+MTU               : 1514                
+SAP Count         : 1                   SDP Bind Count    : 3
+Snd Flush on Fail : Disabled            Host Conn Verify  : Disabled
+SHCV pol IPv4     : None
+Propagate MacFlush: Disabled            Per Svc Hashing   : Disabled
+Allow IP Intf Bind: Disabled
+Fwd-IPv4-Mcast-To*: Disabled            Fwd-IPv6-Mcast-To*: Disabled
+Mcast IPv6 scope  : mac-based           
+Def. Gateway IP   : None                
+Def. Gateway MAC  : None                
+Temp Flood Time   : Disabled            Temp Flood        : Inactive
+Temp Flood Chg Cnt: 0                   
+SPI load-balance  : Disabled            
+TEID load-balance : Disabled            
+Lbl Eth/IP L4 TEID: Disabled            
+Src Tep IP        : N/A                 
+Vxlan ECMP        : Disabled            
+MPLS ECMP         : Disabled            
+Ignore MTU Mismat*: Disabled            
+ 
+-------------------------------------------------------------------------------
+Service Access & Destination Points
+-------------------------------------------------------------------------------
+Identifier                               Type         AdmMTU  OprMTU  Adm  Opr
+-------------------------------------------------------------------------------
+sap:1/1/2:*                              q-tag        1518    1518    Up   Up
+sdp:6:200 M(10.10.10.6)                  Mesh         0       8682    Up   Up
+sdp:7:200 M(10.10.10.7)                  Mesh         0       8682    Up   Up
+sdp:8:200 M(10.10.10.8)                  Mesh         0       8682    Up   Up
+===============================================================================
+
+A:R5-Rae00033# show service id 200 fdb detail 
+
+===============================================================================
+Forwarding Database, Service 200
+===============================================================================
+ServId     MAC               Source-Identifier       Type     Last Change
+            Transport:Tnl-Id                         Age      
+-------------------------------------------------------------------------------
+200        52:54:00:70:9a:58 sdp:6:200               L/0      02/03/25 16:22:03
+200        52:54:00:88:3e:4e sap:1/1/2:*             L/30     02/03/25 17:19:06
+200        52:54:00:bc:cb:cc sdp:8:200               L/120    02/03/25 17:07:42
+200        52:54:00:e0:0c:18 sdp:7:200               L/120    02/03/25 16:33:04
+-------------------------------------------------------------------------------
+No. of MAC Entries: 4
+-------------------------------------------------------------------------------
+Legend:  L=Learned O=Oam P=Protected-MAC C=Conditional S=Static Lf=Leaf
+===============================================================================
+
+A:R5-Rae00033>config>service>vpls# info 
+----------------------------------------------
+            stp
+                shutdown
+            exit
+            sap 1/1/2:* create
+                no shutdown
+            exit
+            mesh-sdp 6:200 create
+                no shutdown
+            exit
+            mesh-sdp 7:200 create
+                no shutdown
+            exit
+            mesh-sdp 8:200 create
+                no shutdown
+            exit
+            no shutdown
+----------------------------------------------

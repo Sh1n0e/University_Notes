@@ -1,0 +1,82 @@
+!MPLS Lab 4.1 Link Coloring (Week11 lab part 1)
+
+Show commands:
+show router ospf status
+show router ospf opaque-database
+show router ospf opaque-database adv-router <routerid> detail
+tools perform router mpls resignal lsp <lsp-name> path <path-name>
+
+Instructions:
+1. Enable Traffic Engineering on EDGE router
+2. Enable Traffic Engineering on CORE router
+3. Configure 2 administrative groups (green(1)outer ring mpls ints, red(2 diagonal to core))
+4. CORE router create loose hop
+5. CORE router shut interface facing clockwise core router, verify
+6. CORE router shut interface facing counter clockwise core router, verify
+7. No Shut interfaces, verify
+
+Configuration:
+!R5
+configure router ospf traffic-engineering
+!verify on R1
+
+!R1
+configure router ospf traffic-engineering
+!verify 
+configure router if-attribute admin-group green value 1
+configure router if-attribute admin-group red value 2
+configure router mpls interface "toR2"
+admin-group "green"
+no shutdown
+exit
+interface "toR3"
+admin-group "green"
+no shutdown
+exit
+interface "toR4"
+admin-group "green"
+admin-group "red"
+no shutdown
+exit
+!verify
+configure router mpls
+lsp "toR2-1"
+to 10.10.10.2
+path-computation-method local-cspf
+include "green"
+exclude "red"
+primary "loose"
+exit
+no shutdown
+exit
+!verify
+
+configure router interface "toR2" shutdown !verify
+
+configure router interface "toR3" shutdown !verify
+
+configure router interface "toR2" no shutdown !verify
+
+configure router interface "toR3" no shutdown !verify
+
+Outputs:
+1. show router mpls lsp "toR2-1" path detail (Clockwise SHUT)
+
+2. traceroute 10.10.10.2
+
+3. oam lsp-trace toR2-1
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

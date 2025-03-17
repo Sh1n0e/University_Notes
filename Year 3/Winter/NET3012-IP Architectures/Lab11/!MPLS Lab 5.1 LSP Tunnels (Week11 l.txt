@@ -1,0 +1,40 @@
+!MPLS Lab 5.1 LSP Tunnels (Week11 lab part 2)
+
+!R5
+configure router mpls
+!
+path "toR4strict"
+hop 10 10.10.10.1 strict
+hop 20 10.10.10.2 strict
+hop 30 10.10.10.4 strict
+no shutdown
+exit
+!
+lsp "toR4-4"
+to 10.10.10.4
+primary "toR4strict"
+exit
+secondary "loose"
+exit
+no shutdown
+exit
+!verify
+configure router mpls lsp "toR4-4" secondary "loose "standby
+!verify
+
+!R2
+configure router interface "toR4" shutdown
+!verify 
+!NO SHUT EVERYTHING
+
+Outputs:
+1. show router mpls lsp "toR2-1" path detail (Clockwise SHUT)
+2. configure router info (R1,R5)
+
+
+
+
+
+
+
+

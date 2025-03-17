@@ -1,0 +1,117 @@
+A:Rae00033-R05(PE1)# show service id 110 base 
+
+===============================================================================
+Service Basic Information
+===============================================================================
+Service Id        : 110                 Vpn Id            : 0
+Service Type      : VPRN                
+MACSec enabled    : no                  
+Name              : VPRN 1
+Description       : VPRN Service for Customer Blue
+Customer Id       : 110                 Creation Origin   : manual
+Last Status Change: 03/15/2025 20:24:21 
+Last Mgmt Change  : 03/15/2025 20:24:21 
+Admin State       : Up                  Oper State        : Up
+ 
+Router Oper State : Up                  
+Route Dist.       : 64496:110           VPRN Type         : regular
+Oper Route Dist   : 64496:110
+Oper RD Type      : configured          
+AS Number         : 64496               Router Id         : 10.10.10.5
+ECMP              : Enabled             ECMP Max Routes   : 1
+Max IPv4 Routes   : No Limit            
+Local Rt Domain-Id: None                D-Path Lng Ignore : Disabled
+
+Auto Bind Tunnel
+Allow Flex-Alg-Fb : Disabled            
+Resolution        : filter              
+Filter Protocol   : ldp
+Weighted ECMP     : Disabled            ECMP Max Routes   : 1
+Strict Tnl Tag    : Disabled            
+
+Max IPv6 Routes   : No Limit            
+Ignore NH Metric  : Disabled            
+Hash Label        : Disabled            
+Entropy Label     : Disabled            
+Vrf Target        : target:64496:110    
+Vrf Import        : None
+Vrf Export        : None
+MVPN Vrf Target   : None                
+MVPN Vrf Import   : None
+MVPN Vrf Export   : None
+Car. Sup C-VPN    : Disabled            
+Label mode        : vrf                 
+BGP VPN Backup    : Disabled            
+BGP Export Inactv : Disabled            
+LOG all events    : Disabled            
+ 
+SAP Count         : 1                   SDP Bind Count    : 0
+ 
+-------------------------------------------------------------------------------
+Service Access & Destination Points
+-------------------------------------------------------------------------------
+Identifier                               Type         AdmMTU  OprMTU  Adm  Opr
+-------------------------------------------------------------------------------
+sap:1/1/2:110                            q-tag        1518    1518    Up   Up
+===============================================================================
+
+A:Rae00033-R05(PE1)# show router bgp routes vpn-ipv4 
+===============================================================================
+ BGP Router ID:10.10.10.5       AS:64496       Local AS:64496      
+===============================================================================
+ Legend -
+ Status codes  : u - used, s - suppressed, h - history, d - decayed, * - valid
+                 l - leaked, x - stale, > - best, b - backup, p - purge
+ Origin codes  : i - IGP, e - EGP, ? - incomplete
+
+===============================================================================
+BGP VPN-IPv4 Routes
+===============================================================================
+Flag  Network                                            LocalPref   MED
+      Nexthop (Router)                                   Path-Id     IGP Cost
+      As-Path                                                        Label
+-------------------------------------------------------------------------------
+u*>i  64496:110:10.8.12.0/24                             100         None
+      10.10.10.8                                         None        3
+      No As-Path                                                     524285
+u*>i  64496:110:10.10.4.0/24                             100         None
+      10.10.10.8                                         None        3
+      64498                                                          524285
+-------------------------------------------------------------------------------
+Routes : 2
+===============================================================================
+
+A:Rae00033-R05(PE1)# show router bgp routes vpn-ipv6
+===============================================================================
+ BGP Router ID:10.10.10.5       AS:64496       Local AS:64496      
+===============================================================================
+ Legend -
+ Status codes  : u - used, s - suppressed, h - history, d - decayed, * - valid
+                 l - leaked, x - stale, > - best, b - backup, p - purge
+ Origin codes  : i - IGP, e - EGP, ? - incomplete
+
+===============================================================================
+BGP VPN-IPv6 Routes
+===============================================================================
+Flag  Network                                            LocalPref   MED
+      Nexthop (Router)                                   Path-Id     IGP Cost
+      As-Path                                                        Label
+-------------------------------------------------------------------------------
+u*>i  64496:110:2001:db8::12/128                         100         None
+      ::ffff:10.10.10.8                                  None        3
+      64498                                                          524285
+u*>i  64496:110:2001:db8:4::/48                          100         None
+      ::ffff:10.10.10.8                                  None        3
+      64498                                                          524285
+u*>i  64496:110:2001:db8:44::/64                         100         None
+      ::ffff:10.10.10.8                                  None        3
+      No As-Path                                                     524285
+-------------------------------------------------------------------------------
+Routes : 3
+===============================================================================
+
+A:Rae00033-R09(CE1)# traceroute 2001:db8:4::4 
+traceroute to 2001:db8:4::4, 30 hops max, 60 byte packets
+  1  2001:db8:11::5 (2001:db8:11::5)    2.04 ms  1.95 ms  2.30 ms
+  2  2001:db8:44::8 (2001:db8:44::8)    4.87 ms  5.01 ms  4.23 ms
+  3  2001:db8:4::4 (2001:db8:4::4)    5.54 ms  4.95 ms  4.66 ms

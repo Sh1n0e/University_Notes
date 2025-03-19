@@ -137,3 +137,22 @@ VNI is a 24-bit identifier which allows for up to 16 million VXLAN segments to c
 - TrustSec SGT tags provide several advantages for Cisco SD-Access, such as: Network address-independent group-based policies based on SGT tags rather than MAC, IPv4, or IPv6 addresses, which reduces complexity.
 ----
 
+## Controller Layer
+
+The controller layer provides all of the management subsytems for the management layer, and this is all prvided by Cisco DNA Center and Cisco ISE.
+
+### Controller Layer Subsystems
+
+There are 3 main controller layer subsystems:
+1. Cisco Network Control Plaform (NCP) {Automation} - Provides all the underlay fabric automation and orchestration services for the physcal and network layers.
+2. Cisco Network Data Platform (NDP) {Assurance} - NDP is a data collection, data analytics and assurance subsystem that is integrated directly into Cisco DNA Center. NDP analyzes and correlates various network events through multiple sources and identifies historical trends.
+3. Cisco Identity Services Engine (ISE) - The basic role of ISE s to provide all the identity and policy services for the physical layer and network layer. ISE provides network access control (NAC) and identity services for dynamic endpoint-to-group mapping and policy definition in a variety of ways
+
+----
+
+## Management Layer
+
+User inteface/user experience layer, where all the information from other layers is presented to the user in the form of a centralized managment dashboard. Major configurations and oepration worflow areas:
+1. Design - Configures device global settings
+2. Policy - Defines business intent including creation of irtual networks, assignment of endpoints to virtual networks, policy contract definitions for groups 
+3. Provision 

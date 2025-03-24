@@ -1,0 +1,342 @@
+!! After Step 8 in lab 6 when LSP paths are up 
+*A:R5-Hart0400# show router mpls lsp "toR8-5" path detail 
+
+===============================================================================
+MPLS LSP toR8-5 Path  (Detail)
+===============================================================================
+Legend : 
+    @ - Detour Available              # - Detour In Use
+    b - Bandwidth Protected           n - Node Protected
+    s - Soft Preemption           
+    S - Strict                        L - Loose
+    A - ABR                           + - Inherited
+===============================================================================
+-------------------------------------------------------------------------------
+LSP toR8-5
+Path primary-toR8
+-------------------------------------------------------------------------------
+LSP Name    : toR8-5
+From             : 10.10.10.5              
+To               : 10.10.10.8              
+Admin State      : Up                      Oper State        : Up
+Path Name   : primary-toR8
+Path LSP ID      : 58372                   Path Type         : Primary
+Path Admin       : Up                      Path Oper         : Up
+Out Interface    : 1/1/1                   Out Label         : 524256
+Path Up Time     : 0d 00:00:09             Path Down Time    : 0d 00:00:00
+Retry Limit      : 0                       Retry Timer       : 30 sec
+Retry Attempt    : 0                       Next Retry In     : 0 sec
+ 
+BFD Configuration and State
+Template         : None                    Ping Interval     : 60
+Enable           : False                   State             : notApplicable
+WaitForUpTimer   : 4 sec                   OperWaitForUpTimer: N/A
+WaitForUpTmLeft  : 0 sec                   
+ 
+Adspec           : Disabled                Oper Adspec       : Disabled
+PathCompMethod   : local-cspf              OperPathCompMethod: local-cspf
+MetricType       : igp                     Oper MetricType   : igp
+Least Fill       : Disabled                Oper LeastFill    : Disabled
+FRR              : Disabled                Oper FRR          : Disabled
+Propagate Adm Grp: Disabled                Oper Prop Adm Grp : Disabled
+Inter-area       : False                   
+ 
+PCE Report       : Disabled+               Oper PCE Report   : Disabled
+PCE Control      : Disabled                Oper PCE Control  : Disabled
+PCE Update ID    : 0                       
+ 
+Neg MTU          : 8690                    Oper MTU          : 8690
+Bandwidth        : No Reservation          Oper Bandwidth    : 0 Mbps
+Hop Limit        : 255                     Oper HopLimit     : 255
+Record Route     : Record                  Oper Record Route : Record
+Record Label     : Record                  Oper Record Label : Record
+Setup Priority   : 7                       Oper SetupPriority: 7
+Hold Priority    : 0                       Oper HoldPriority : 0
+Class Type       : 0                       Oper CT           : 0
+Backup CT        : None                    
+MainCT Retry     : n/a                     
+    Rem          :                         
+MainCT Retry     : 0                       
+    Limit        :                         
+Include Groups   :                         Oper IncludeGroups: 
+None                                           None
+Exclude Groups   :                         Oper ExcludeGroups: 
+None                                           None
+ 
+Adaptive         : Enabled                 Oper Metric       : 30
+Preference       : n/a                     
+Path Trans       : 3                       CSPF Queries      : 2
+Degraded         : False                   
+Failure Code     : noError
+Failure Node : n/a
+Explicit Hops    :                         
+    No Hops Specified
+Actual Hops      :                         
+    10.1.5.5(10.10.10.5)                         Record Label        : N/A
+ -> 10.1.5.1(10.10.10.1)                         Record Label        : 524256
+ -> 10.1.4.4(10.10.10.4)                         Record Label        : 524262
+ -> 10.4.8.8(10.10.10.8)                         Record Label        : 524262
+Computed Hops    :                         
+    10.1.5.5(S)       
+ -> 10.1.5.1(S)       
+ -> 10.1.4.4(S)       
+ -> 10.4.8.8(S)       
+Resignal Eligible: False                   
+Last Resignal    : n/a                     CSPF Metric       : 30
+-------------------------------------------------------------------------------
+LSP toR8-5
+Path secondary-toR8
+-------------------------------------------------------------------------------
+LSP Name    : toR8-5
+From             : 10.10.10.5              
+To               : 10.10.10.8              
+Admin State      : Up                      Oper State        : Up
+Path Name   : secondary-toR8
+Path LSP ID      : 58370                   Path Type         : Standby
+Path Admin       : Up                      Path Oper         : Down
+Out Interface    : n/a                     Out Label         : n/a
+Path Up Time     : 0d 00:00:00             Path Down Time    : 0d 00:01:06
+Retry Limit      : 0                       Retry Timer       : 30 sec
+Retry Attempt    : 1                       Next Retry In     : 18 sec
+ 
+BFD Configuration and State
+Template         : None                    Ping Interval     : 60
+Enable           : False                   State             : notApplicable
+WaitForUpTimer   : 4 sec                   OperWaitForUpTimer: N/A
+WaitForUpTmLeft  : 0 sec                   
+ 
+Adspec           : Disabled                Oper Adspec       : N/A
+PathCompMethod   : local-cspf              OperPathCompMethod: N/A
+MetricType       : igp                     Oper MetricType   : N/A
+Least Fill       : Disabled                Oper LeastFill    : N/A
+Propagate Adm Grp: Disabled                Oper Prop Adm Grp : N/A
+Inter-area       : N/A                     
+ 
+PCE Report       : Disabled+               Oper PCE Report   : Disabled
+PCE Control      : Disabled                Oper PCE Control  : Disabled
+PCE Update ID    : 0                       
+ 
+Neg MTU          : 0                       Oper MTU          : N/A
+Bandwidth        : No Reservation          Oper Bandwidth    : N/A
+Hop Limit        : 255                     Oper HopLimit     : N/A
+Record Route     : Record                  Oper Record Route : N/A
+Record Label     : Record                  Oper Record Label : N/A
+Setup Priority   : 7                       Oper SetupPriority: N/A
+Hold Priority    : 0                       Oper HoldPriority : N/A
+Class Type       : 0                       Oper CT           : N/A
+Include Groups   :                         Oper IncludeGroups: 
+None                                           N/A
+Exclude Groups   :                         Oper ExcludeGroups: 
+None                                           N/A
+ 
+Adaptive         : Enabled                 Oper Metric       : N/A
+Preference       : 255                     
+Path Trans       : 0                       CSPF Queries      : 3
+Degraded         : False                   
+Failure Code     : noCspfRouteToDestination
+Failure Node : 10.10.10.5
+Explicit Hops    :                         
+    No Hops Specified
+Actual Hops      :                         
+    No Hops Specified
+Computed Hops    :                         
+    No Hops Specified
+Srlg             : Enabled                 Srlg Disjoint     : False
+Resignal Eligible: False                   
+Last Resignal    : n/a                     CSPF Metric       : N/A
+===============================================================================
+
+!! show router mpls lsp lsp-name path detail for Lab 7.1
+A:R5-Hart0400# show router mpls lsp "toR8-6" path detail 
+
+===============================================================================
+MPLS LSP toR8-6 Path  (Detail)
+===============================================================================
+Legend : 
+    @ - Detour Available              # - Detour In Use
+    b - Bandwidth Protected           n - Node Protected
+    s - Soft Preemption           
+    S - Strict                        L - Loose
+    A - ABR                           + - Inherited
+===============================================================================
+-------------------------------------------------------------------------------
+LSP toR8-6
+Path toR8-strict
+-------------------------------------------------------------------------------
+LSP Name    : toR8-6
+From             : 10.10.10.5              
+To               : 10.10.10.8              
+Admin State      : Up                      Oper State        : Up
+Path Name   : toR8-strict
+Path LSP ID      : 55296                   Path Type         : Primary
+Path Admin       : Up                      Path Oper         : Up
+Out Interface    : 1/1/1                   Out Label         : 524246
+Path Up Time     : 0d 00:01:53             Path Down Time    : 0d 00:00:00
+Retry Limit      : 0                       Retry Timer       : 30 sec
+Retry Attempt    : 0                       Next Retry In     : 0 sec
+ 
+BFD Configuration and State
+Template         : None                    Ping Interval     : 60
+Enable           : False                   State             : notApplicable
+WaitForUpTimer   : 4 sec                   OperWaitForUpTimer: N/A
+WaitForUpTmLeft  : 0 sec                   
+ 
+Adspec           : Disabled                Oper Adspec       : Disabled
+PathCompMethod   : local-cspf              OperPathCompMethod: local-cspf
+MetricType       : igp                     Oper MetricType   : igp
+Least Fill       : Disabled                Oper LeastFill    : Disabled
+FRR              : Enabled                 Oper FRR          : Enabled
+FRR NodeProtect  : Enabled                 Oper FRR NP       : Enabled
+FR Hop Limit     : 16                      Oper FRHopLimit   : 16
+FR Prop Admin Gr*: Disabled                Oper FRPropAdmGrp : Disabled
+Propagate Adm Grp: Disabled                Oper Prop Adm Grp : Disabled
+Inter-area       : False                   
+ 
+PCE Report       : Disabled+               Oper PCE Report   : Disabled
+PCE Control      : Disabled                Oper PCE Control  : Disabled
+PCE Update ID    : 0                       
+                                      
+Neg MTU          : 8686                    Oper MTU          : 8686
+Bandwidth        : No Reservation          Oper Bandwidth    : 0 Mbps
+Hop Limit        : 255                     Oper HopLimit     : 255
+Record Route     : Record                  Oper Record Route : Record
+Record Label     : Record                  Oper Record Label : Record
+Setup Priority   : 7                       Oper SetupPriority: 7
+Hold Priority    : 0                       Oper HoldPriority : 0
+Class Type       : 0                       Oper CT           : 0
+Backup CT        : None                    
+MainCT Retry     : n/a                     
+    Rem          :                         
+MainCT Retry     : 0                       
+    Limit        :                         
+Include Groups   :                         Oper IncludeGroups: 
+None                                           None
+Exclude Groups   :                         Oper ExcludeGroups: 
+None                                           None
+ 
+Adaptive         : Enabled                 Oper Metric       : 40
+Preference       : n/a                     
+Path Trans       : 1                       CSPF Queries      : 45
+Degraded         : False                   
+Failure Code     : noError
+Failure Node : n/a
+Explicit Hops    :                         
+                  10.10.10.1(S)
+               -> 10.10.10.2(S)
+               -> 10.10.10.4(S)
+               -> 10.10.10.8(S)
+Actual Hops      :                         
+    10.1.5.5(10.10.10.5)                         Record Label        : N/A
+ -> 10.1.5.1(10.10.10.1) @ n                     Record Label        : 524246
+ -> 10.1.2.2(10.10.10.2) @                       Record Label        : 524252
+ -> 10.2.4.4(10.10.10.4)                         Record Label        : 524256
+ -> 10.4.8.8(10.10.10.8)                         Record Label        : 524261
+Computed Hops    :                         
+    10.1.5.5(S)       
+ -> 10.1.5.1(S)       
+ -> 10.1.2.2(S)       
+ -> 10.2.4.4(S)       
+ -> 10.4.8.8(S)       
+Resignal Eligible: False                   
+Last Resignal    : n/a                     CSPF Metric       : 40
+===============================================================================
+* indicates that the corresponding row element may have been truncated.
+
+
+
+!! show router mpls lsp lsp-name path detail for Lab 7.2
+A:R5-Hart0400# show router mpls lsp "toR8-6" path detail 
+
+===============================================================================
+MPLS LSP toR8-6 Path  (Detail)
+===============================================================================
+Legend : 
+    @ - Detour Available              # - Detour In Use
+    b - Bandwidth Protected           n - Node Protected
+    s - Soft Preemption           
+    S - Strict                        L - Loose
+    A - ABR                           + - Inherited
+===============================================================================
+-------------------------------------------------------------------------------
+LSP toR8-6
+Path toR8-strict
+-------------------------------------------------------------------------------
+LSP Name    : toR8-6
+From             : 10.10.10.5              
+To               : 10.10.10.8              
+Admin State      : Up                      Oper State        : Up
+Path Name   : toR8-strict
+Path LSP ID      : 55298                   Path Type         : Primary
+Path Admin       : Up                      Path Oper         : Up
+Out Interface    : 1/1/1                   Out Label         : 524270
+Path Up Time     : 0d 00:02:58             Path Down Time    : 0d 00:00:00
+Retry Limit      : 0                       Retry Timer       : 30 sec
+Retry Attempt    : 0                       Next Retry In     : 0 sec
+ 
+BFD Configuration and State
+Template         : None                    Ping Interval     : 60
+Enable           : False                   State             : notApplicable
+WaitForUpTimer   : 4 sec                   OperWaitForUpTimer: N/A
+WaitForUpTmLeft  : 0 sec                   
+ 
+Adspec           : Disabled                Oper Adspec       : Disabled
+PathCompMethod   : local-cspf              OperPathCompMethod: local-cspf
+MetricType       : igp                     Oper MetricType   : igp
+Least Fill       : Disabled                Oper LeastFill    : Disabled
+FRR              : Enabled                 Oper FRR          : Enabled
+FRR NodeProtect  : Enabled                 Oper FRR NP       : Enabled
+FR Hop Limit     : 16                      Oper FRHopLimit   : 16
+FR Prop Admin Gr*: Disabled                Oper FRPropAdmGrp : Disabled
+Propagate Adm Grp: Disabled                Oper Prop Adm Grp : Disabled
+Inter-area       : False                   
+ 
+PCE Report       : Disabled+               Oper PCE Report   : Disabled
+PCE Control      : Disabled                Oper PCE Control  : Disabled
+PCE Update ID    : 0                       
+                                      
+Neg MTU          : 8690                    Oper MTU          : 8690
+Bandwidth        : No Reservation          Oper Bandwidth    : 0 Mbps
+Hop Limit        : 255                     Oper HopLimit     : 255
+Record Route     : Record                  Oper Record Route : Record
+Record Label     : Record                  Oper Record Label : Record
+Setup Priority   : 7                       Oper SetupPriority: 7
+Hold Priority    : 0                       Oper HoldPriority : 0
+Class Type       : 0                       Oper CT           : 0
+Backup CT        : None                    
+MainCT Retry     : n/a                     
+    Rem          :                         
+MainCT Retry     : 0                       
+    Limit        :                         
+Include Groups   :                         Oper IncludeGroups: 
+None                                           None
+Exclude Groups   :                         Oper ExcludeGroups: 
+None                                           None
+ 
+Adaptive         : Enabled                 Oper Metric       : 40
+Preference       : n/a                     
+Path Trans       : 3                       CSPF Queries      : 63
+Degraded         : False                   
+Failure Code     : noError
+Failure Node : n/a
+Explicit Hops    :                         
+                  10.10.10.1(S)
+               -> 10.10.10.2(S)
+               -> 10.10.10.4(S)
+               -> 10.10.10.8(S)
+Actual Hops      :                         
+    10.1.5.5(10.10.10.5)                         Record Label        : N/A
+ -> 10.1.5.1(10.10.10.1) @ n                     Record Label        : 524270
+ -> 10.1.2.2(10.10.10.2) @                       Record Label        : 524256
+ -> 10.2.4.4(10.10.10.4)                         Record Label        : 524250
+ -> 10.4.8.8(10.10.10.8)                         Record Label        : 524265
+Computed Hops    :                         
+    10.1.5.5(S)       
+ -> 10.1.5.1(S)       
+ -> 10.1.2.2(S)       
+ -> 10.2.4.4(S)       
+ -> 10.4.8.8(S)       
+Resignal Eligible: False                   
+Last Resignal    : n/a                     CSPF Metric       : 40
+===============================================================================
+* indicates that the corresponding row element may have been truncated.
+

@@ -1,0 +1,68 @@
+Provider Edge Router:
+!! Configuring srlg-group orange with a value of 1
+config>router# if-attricbute srlg-group orange value 1
+
+!! Creating loose paths and LSP with this router as head-end and diagonally opposite as tail-end 
+config>router>mpls$ path "primary-toR8" no shutdown 
+config>router>mpls$ path "secondary-toR8" no shutdown 
+config>router>mpls$ lsp "toR8-5"
+						to 10.10.10.8
+						path-computation-method local-cspf
+						exit
+						secondary "secondary-toR8"
+							standby 
+							srlg 
+							exit 
+						no shutdown
+						exit 
+					no shutdown
+					
+!! Verify with the following comand:
+show router mpls sp "toR8-5" path detail
+
+!! path with strict hops 
+
+config>router>mpls# path "toR8-strict"
+						hop 10 10.10.10.1 strict 
+						hop 20 10.10.10.2 strict 
+						hop 30 10.10.10.4 strict 
+						hop 40 10.10.10.8 strict 
+						no shutdown 
+						exit 
+					exit 
+					
+config>router>mpls# 					
+
+Core Router:
+!! Configuring srlg-group orange with a value of 1
+config>router# if-attricbute srlg-group orange value 1
+
+!! Assign all interfaces to the group "orange"
+>config>router>mpls# interface "toR2" srlg-group "orange"
+>config>router>mpls# interface "toR3" srlg-group "orange"
+>config>router>mpls# interface "toR4" srlg-group "orange"
+
+!! Creating SRLG group "blue" on CORE and EDGE 
+configure router if-attribute srlg-group blue value 2
+configure router mpls interface "toR4" no srlg-group 
+configure router mpls interface "toR4" srlg-group "blue"
+
+!! create paths with strict hops
+config>router>mpls# path "toR4-strict"
+						hop 10 10.10.10.2 strict 
+						hop 20 10.10.10.4 strict 
+						no shutdown 
+						exit 
+					exit 
+
+config>router>mpls# lsp "toR4-6"
+						to 10.10.10.4
+						path-computation-method local-cspf
+						fast-reroute facility 
+						exit 
+						primary "toR4-strict"
+						exit
+					no shutdown
+					exit 
+					
+					

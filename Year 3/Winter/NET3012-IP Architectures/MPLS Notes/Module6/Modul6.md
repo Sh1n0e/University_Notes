@@ -383,3 +383,158 @@ A separate RSVP session exists for each standby secondary LSP-Path, resulting in
 - Applicable for LSPs established using RSVP-TE
 - CSPF plays an important role
 - Allows proection to be applied as close to the point of failure as possible.
+
+### FRR Protection Methods 
+- Two methods:
+  - One-to-One Backup
+  - Facility Backup
+- Each LSP can use only one method 
+- The protection method needs to be specified in the confguration of the protected LSP
+- FRR can only protect the primary LSP-Path of an LSP
+
+### Fast Reroute One-to-One Protection Model 
+![img](img/29.png)
+
+- All three LSPs go through the same path
+- They all request Fast Reroute One-to-One
+- A separate protection tunnel is established for each LSP 
+- The protection tunnel for one-to-oone is called a detour
+
+### Fast Reroute Facility Protection Model 
+![img](img/30.png)
+- All three LSPs go through the same path
+- Thy all request Fast Reroute Facility
+- They can all be protected with the same protection tunnel 
+- The protection tunnel for facility is called a Bypass Tunnel.
+
+### FRR Protection Types
+- From a topological perspective, both one-to-one and facility backup can protect different network elements:
+  - Node Protection - Protects against the failure of the next downstream router.
+  - Link Protection - Protects against the failure of the link to the next downstream router.
+
+- Possible configuration for an LSP are:
+  - One-to-one node protection 
+  - One-to-one link protection 
+  - Facility node protection 
+  - Facility link protection 
+
+### Fast Reroute Node Protection Model
+![img](img/31.png)
+
+- The primary LSP-Path has requested node protection 
+- R2 establishes a protection tunnel that detours around the next downstream router, R3
+- R3 and all its links are avoided on the protection tunnel path.
+
+### Fast Reroute Link Protection Model 
+
+![img](img/32.png)
+
+- The Primary LSP-Path has requested link protection 
+- R2 establishes a protection tunnel that detours around the link, to the next downstream router
+- Only the link is avoided on the protection tunnel path
+
+### Node and Link Protecction Types
+- Default method is node protection
+- if desired:
+  - router attempts to establish a node protection tunnel 
+  - If this cannot be accomplished, as a result of toplogical or other constraints, the router reverts to link protection.
+  - In the background the PLR will try to find a new path to establish node protection every 60 seconds.
+- Node protection can be disabled in the LSP configuraiton
+  - In this case, the routers only attempt link protection.
+
+### Fast Reroute Router Roles
+
+- **Head-End Router** - where the primary (protected) LSP-Path is configured and where it originaltes
+- **Tail-End Router** - Where the primary LSP terminates
+- **Point of Local Repair (PLR)** - Where the protection tunnel originates 
+- **Merge Point (MP)** - Where the protection tunnel terminates and merges into the original protected LSP-Path
+
+### PLR and MP Roles of Routers in FRR
+![img](img/32.png)
+- PLR is the router where the protection tunnel originates. When the link failes, the LSP traffic is lcally recovered at this point
+- Merge Point (MP) is the router where the protection tunnel terminates and merges into the original LSP-Path
+
+R1 = Head-End
+R2 = PLR
+R3 = MP
+R4 = Tail-End
+
+The link between R2 and R3 is where we are trying to get the detour.
+
+
+### Fast Reroute LSP-Path and CSPF Requirements
+
+- For Fast Reroute to function, the Head-End needs to know the exact path of the LSP-Path before signaling it.
+- This can be accomplished in serveral ways:
+  - Path with fully strict hops (CSPF doesn't need to be enabled)
+  - Path with loose hops (CSPF must be enabled)
+  - Path with a mixture of strict and loose hops (CSPF must be enabled)
+- For a rimary LSP-Path that has:
+  - Loose-hops in path definition
+  - Fast-Reroute enabled
+  - CSPF disabled
+
+The LSP will be in a **DOWN** operational state, with failure code "looseHopsInFRRLsp"
+
+### Fast Reroute Configuraiton Requirements
+- Fast Reroute is only configured on the LSP Head-End
+- All routers along the primary LSP-Path are required to automatically establish protection tunnels, based on the configured method and type
+- No extra configuration required on the other routers.
+
+### Confgiuring an LSP for Fast Reroute One-to-One Confgiuring an LSP for Fast Reroute One-to-One
+
+![img](img/33.png)
+
+- One-to-one protection is the default method
+- Node-protect is enabled by default 
+- If the path definition contains loose hops, CSPF needs to be enabled.
+
+### Fast Reroute Signaling Requirements 
+- RSVP-TE ptorocol was extended to allow for the automatic signaling of the protection tunnels
+- Introduces two objects:
+  - Fast-Reroute Object
+  - Detour Object (only for one-to-one method)
+- The new objects are also carried in the RSVP Path messages
+
+### Signaling the FRR Options
+- When Fast Reroute is enabled on an LSP, the HEad-End includes an additional Fast_Reroute object in the PATH message
+- The protection method is signaled in the Flags field of the Fast_Reroute object:
+  - One-to-one (0x01)
+  - Facility (0x02)
+- In the Session_Attribute object of the PATH message, the router also indicates the following flags:
+  - local-protection-desired
+  - node-protection-desired (unless disabled in configuration)
+
+### Signaling the FRR Options in the PATH message 
+
+![img](img/34.png)
+
+- LSP is confgiured for Fast Reroute with:
+  - One-to-One
+  - Node Proection
+
+### Signaling the Primary LSP-Path
+
+- After the LSP is enabled, primary LSP-Path is signaled first
+- Fast Reroute protection is not attempted yet
+
+### Timing for Fast Reroute Detour Creation
+- Rotuers wait for the second RESV message before calculating and signalingthe detours
+- This is to ensure that the primary LSP-Path is successfully established end-to-end
+
+### Calculating the Protection Tunnels
+
+- Upon receiving the second RESV message, all routers along the primary LSP-Path (except the Tail-End):
+  - Assuming the PLR role
+  - calculate separate protection tunnels that originate on themselves, onsidering the protection method and type.
+- Protection tunnels are calculated locally on each PLR
+- Calculation is done through the internal CSPF processs on each PLR
+- Traffic-Engineering must beenabled in the IGP of all the routers.
+
+### CSPF Calculation Constraints For FRR
+- When computing a protection path on a PLR, the constraints for CSPF are:
+  - Node-protect - To find a protection path for the primary LSP that avoids the downstream node and all its network links
+  - Link-protect - to find a protection path for the primary LSP that avoids only the link connected to the downstream node
+- The rotuer just before the Tail-End always performs link-protection (failure of the Tail-End router is catastrophic for the LSP)
+- FRR protection tunnels do not follow any protected path constraints other than hop limit (if configured) and SLRG ("srlg-frr" option needs to be enabled in the global MPLS context, if that is desired)
+

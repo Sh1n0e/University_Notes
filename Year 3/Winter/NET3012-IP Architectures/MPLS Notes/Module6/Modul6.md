@@ -538,3 +538,239 @@ The LSP will be in a **DOWN** operational state, with failure code "looseHopsInF
 - The rotuer just before the Tail-End always performs link-protection (failure of the Tail-End router is catastrophic for the LSP)
 - FRR protection tunnels do not follow any protected path constraints other than hop limit (if configured) and SLRG ("srlg-frr" option needs to be enabled in the global MPLS context, if that is desired)
 
+### CSPF View of the Topology with Node-Protect
+
+- PLR evaluates the Traffic Engineering Database with CSPF.
+- Using node-protect, the resulting topology is calculated without the downstream router and all its network links.
+
+### Merge Point for One-to-One Detour Tunnels
+
+- The termination point for a protection tunnel is called the Merge Point (MP) router.
+  - Other words, MP is where the protection tunnel and rotected tunnel merge or meet again.
+- Location of the MP for a protection tunnel depends on the protection mode and the actual topology.
+- The detour tunnel is calculated to the Tail-End, using the shortest IGP path.
+
+### MP for One-to-One Detour Scenarios Pages 100-101
+
+### PATH Message for the Detour Tunnel
+- PLR sends a separate RSVP PATH message to signal the detour tunnel
+- The result of the CSPF calculation is included in the Explicit Route Obect (ERO) of the PATH message.
+- The detour tunnel uses the same Tunnel ID and LSP ID as the original primary SP-Path. This is to identify the association on all the routers.
+- The LSP-Name field in the PATH message of the detour tunnel takes the following format:
+  - ```<LSP-Name>::<Path-Name>_detour```
+  - For example: ```to_R6::fully_loose_detour```
+
+### Detour Object used in the Detour PATH Message
+
+- A Detour Object is also included in the PAHT message sent by the PLR to signal the detour path.
+- The detour object helps to distinguish the detour tunnels from different PLRs
+- Aong other fields, the detour object contains:
+  - **PLR ID**: System IP address of the PLR
+  - **Avoid_Node**, depending on the protection node:
+    - **Node protect**: System IP address of the protected router
+    - **Link protect**: The interface IP address of the protected router.
+
+### Signaling the Detour Tunnel - PLR:R1
+
+![img](img/35.png)
+
+- Router 1 assumes the PLR role as well as Head-End for the LSP
+- A PATH message is sent to establish the detour tunnel
+- A detour object indicates that the tunnel from R1 avoids R2.
+
+![img](img/36.png)
+
+- The detour tunnel is established and ready to protect the primary LSP-Path
+- A separate RSVP session is maintained on all routers along the detour path.
+
+### Viewing the RSVP Sessions for One-to-One Detours
+
+- It is possible to filter the command output, based on detour type:
+  - *show rotuer rsvp session detour* - Originating detours
+  - *show router rsvp session detour-transit* - Transiting detours
+  - *show router rsvp session detour-terminate* - terminating detours
+- **detail** keyword can be used with each command to see the session details.
+
+### Signaling the Detour Tunnel - PLR:R2
+
+![img](img/37.png)
+
+- R2 also assumes the PLR role
+- R2 calculates and signals a detour path that avoids R3
+
+### Signaling the Detour Tunnel - PLR:R3
+
+![img](img/38.png)
+
+- R3 is also requested to perform node-protect by LSP Head-End
+- Node-protection is not applicable to R3
+- R3 reverts to link protection
+- Detour tunnel is established.
+
+### RSVP Record Route Object (RRO)
+
+- RRO is included, by default, in RSVP PATH and RESV messages
+- Each router along the LSP-Path updates the RRO field
+- RRO is used to track the exact path that an LSP-Path takes
+- Interface IP addresses are used
+- In the context of FRR, routers make special use of the RRO inside the RESV message
+- Labels are also recorded in the RRO of the RESV message.
+
+### RRO in the RSVP PATH message
+
+![img](img/39.png)
+
+- RRO is updated at each hop of the PATH message.
+- Each router adds its own IP address connecting to the downstream router at the top of the list.
+
+### RRO in the RSVP RESV Message
+
+![img](img/40.png)
+
+- An RRO is also present in the RESV message
+- Each router adds:
+  - Its interface IP address connecting to the upperstream router
+  - The label allocated for the LSP.
+
+### Using the RRO to report FRR status
+
+- When a router successfully establishes a detour tunnel, it sets the local-protection-available flag for its entry in the RRO of the next RESV refresh message
+- If it can establish a node protection tunnel, the router also sets the node-protection-available flag.
+- This gives the Head-End FRR status visibility over the entire primary LSP-Path.
+
+### Signaling the Detour Tunnel - PLR:R1
+
+![img](img/41.png)
+
+This is a figure of the reporting o the protection tunnel performed by all PLRs.
+
+- R4 is the Tail-End route and does not perform the PLR role.
+- R3 can establish a link protection tunnel and sets the only "local protection available" flag indicated by an @ sign.
+- R2 can establish a node protection tunnel and sets both the "local protection available" and "node protection available" (n) flag in RESV refresh messages.
+
+### Viewing the FRR Status in CLI
+
+![img](img/42.png)
+
+- The Actual Hops field is extracted form the RRO of RESV messages (except for the first hop, which is the Head-End router itself.)
+- The FRR status of each router is included in the output.
+- **NOTE**: The label values shown above are not actual SR OS generated labels.
+
+### Detour Merging
+
+- With FRR one-to-one protection, each router creates a separate detour tunnel for each protected LSP.
+- This can lead to a large number of detour tunnels in the network.
+- Detour Merging was introduced in RFC 4090.
+- If multiple detour tunnels protecting the same LSP-Path use the same outgoing link on a router, they are merged.
+- The router that performs the merging operations is called a Detour Merge Point (DMP).
+- A single PATH message, consisting of a list of the detour objects of the merged detour tunnels, is sent beyond the DMP.
+- Detour Merging is a default behavior and cannot be disabled.
+
+### Detour Merging Example - Pages 116 - 118
+
+### FRR One-to-One - Traffic Forwarding On the Original Path
+
+![img](img/43.png)
+
+- Traffic is forwarded on the original primary LSP-Path
+- The detour tunnels are also established on the rotuers and are ready to be activated, in case of a failure.
+
+### FRR One-to-One - Activating the Detour on R2
+
+![img](img/44.png)
+
+- R2 detects that the connection to R3 is lost (it could be the result of a link or total nodal failure on R3)
+- R2 performs a label swap from the original primary LSP-Path to the detour tunel.
+
+### Configuring an LSP for Fast Reroute Facility
+
+```
+A:admin@R1# info
+
+-------------------
+  path "fully_loose" {
+    admin-state enable
+  }
+
+  lsp "toR4" {
+    admin-state enable
+    type p2p-rsvp
+    to 10.10.10.4
+    path-computation-method local-cspf
+    fast-rerotue {
+      frr-method facility
+      node-protect true
+    }
+    primary "fully_loose" {
+    }
+  }
+--------------------------
+
+```
+
+- Same configuration as one-to-one; the only required change is the "facility" specification
+- Node-protect is again enabled by default.
+
+### CSPF View - Fast Reroute Facility and Node Protection
+
+![img](img/45.png)
+
+- Like one-to-one, the PLR evaluates the topology accoridng to teh protection tpe
+- The selection of MP is different.
+
+### Merge Point Selection in Facility FRR
+
+- The main idea of Facility protection is to use an established bypass tunnel for as many LSPs as possible
+- To accomplish this, the bypass tunnel merges with the original LSP-Path at the closest downstream router as possible
+- Specifically:
+  - Link-protect - MP is the PLR's Next-Hop router (1 hop away)
+  - Node-protect - MP is the PLR's Next-Next-Hop router (2 hops away)
+
+### Merge Point Selection with FRR Facility Link-Protect
+
+![img](img/46.png)
+
+- Using link-protect, MP is the PLR's next-hop router
+- The protection tunnel is assigned the name bypass-link10.1.2.2
+
+### Merge Point Selection with FRR Facility Node-Protect
+
+![img](img/47.png)
+
+- Using node-protecet, MP is the next-hop router(R3) after the failed router(R2). R3 is the next-next-hop for R1.
+- The protection tunnel is assigned the name bypass-node10.10.10.2 (router avoided)
+
+### Requirement for RRO in FRR Facility Protection
+
+![img](img/48.png)
+
+- The complete and exact original primary LSP-Path hop and label information are required for facility FRR.
+- Next-next-hop and label infromation are also required.
+- This information is obtained from the RRO of the RESV message received on the primary LSP-Path.
+
+### Guidelines for EStablishing Bypass Tunnels in Facility FRR
+
+- The main objective is to use the same facility bypass tunnel for multiple LSPs.
+- When an LSP requests Facility FRR, the router determines:
+  - Node-protect - if it already has a bypass tunnel established that avoids the next router.
+  - Link-protect - If it already has a bypass tunnel eestablished that avoids the next link.
+- If the required bypass tunnel is:
+  - Already established - The LSP is associated with the same bypass tunnel
+  - Note yet established - A new bypass tunnel is established and the LSP is associated with it.
+
+## FRR Facility Example (Pages 129 - 133)
+
+### Multiple Protected LSPs with a Single Bypass Tunnel
+
+![img](img/49.png)
+
+- Traffic flows over the original primary LSP-Paths
+- Both LSPs are protected by the same bypass tunnel
+
+### Encapsulating traffic in a Bypass Tunnel
+
+- The link R2-R3 fails
+- Traffic for both LSPs is "tunneled" through the same bypass
+- R3 (MP) needs to be able to distinguish between the traffic from the two LSPs in order to forward each with the correct labels.
+
+(Stopped at 526 in pdf for now)
